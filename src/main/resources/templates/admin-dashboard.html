@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal — CampuSphere AI</title>
+    <meta name="description" content="Admin control panel for CampuSphere AI">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #f1f5f9; display: flex; flex-direction: column; min-height: 100vh; margin: 0; }
+        main { flex: 1; }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            padding: 12px 0;
+        }
+        .navbar-brand { font-weight: 700; font-size: 1.25rem; color: #fff !important; }
+
+        /* SECONDARY ADMIN NAVIGATION BAR */
+        .admin-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .admin-nav .nav-pills .nav-link {
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 9px 18px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .admin-nav .nav-pills .nav-link:hover {
+            background: rgba(102, 126, 234, 0.08);
+            color: #667eea;
+        }
+        .admin-nav .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+        }
+
+        /* PAGE ANIMATION */
+        .admin-page {
+            animation: fadeIn 0.22s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* STAT CARDS */
+        .stat-card {
+            background: #fff; border-radius: 16px; padding: 22px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06); border-left: 5px solid;
+            transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; height: 100%;
+        }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.12); }
+        .stat-card.primary  { border-color: #667eea; }
+        .stat-card.success  { border-color: #11998e; }
+        .stat-card.info     { border-color: #4facfe; }
+        .stat-card.warning  { border-color: #f5a623; }
+        .stat-icon { width: 46px; height: 46px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; }
+        .stat-value { font-size: 1.9rem; font-weight: 700; color: #1a1a2e; line-height: 1; }
+        .stat-label { font-size: 0.82rem; color: #64748b; font-weight: 500; margin-top: 5px; }
+
+        /* SECTION HEADER */
+        .section-header { font-size: 1.25rem; font-weight: 700; color: #1a1a2e; margin: 24px 0 16px; display: flex; align-items: center; gap: 10px; }
+
+        /* CONTENT CARDS */
+        .content-card { background: #fff; border-radius: 16px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; }
+        .event-card-admin { background: #fff; border-radius: 16px; box-shadow: 0 3px 12px rgba(0,0,0,0.06); transition: transform 0.2s, box-shadow 0.2s; height: 100%; border: 1px solid #e2e8f0; }
+        .event-card-admin:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+        /* STATUS PILLS */
+        .status-pill { font-size: 0.7rem; padding: 3px 10px; border-radius: 20px; font-weight: 700; letter-spacing: 0.3px; }
+        .status-UPCOMING  { background: #e8f4fd; color: #2196f3; }
+        .status-ONGOING   { background: #e8fdf4; color: #00c853; }
+        .status-COMPLETED { background: #f3e8fd; color: #9c27b0; }
+        .status-CANCELLED { background: #fde8e8; color: #f44336; }
+
+        /* CAPACITY BAR */
+        .capacity-bar { height: 6px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 6px; }
+        .capacity-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .cap-ok   .capacity-fill { background: linear-gradient(90deg,#11998e,#38ef7d); }
+        .cap-warn .capacity-fill { background: linear-gradient(90deg,#f5a623,#ffcc02); }
+        .cap-full .capacity-fill { background: linear-gradient(90deg,#ff6b6b,#ee5a24); }
+
+        /* AI ANALYTICS */
+        .ai-analytics-card { background: linear-gradient(135deg, #1a1a2e, #16213e); border-radius: 18px; color: #fff; padding: 28px; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+        .sentiment-bar { height: 12px; border-radius: 6px; background: rgba(255,255,255,0.1); overflow: hidden; margin-top: 8px; }
+        .sentiment-fill { height: 100%; border-radius: 6px; transition: width 0.8s; }
+        .ai-summary-box { background: rgba(102,126,234,0.15); border: 1px solid rgba(102,126,234,0.35); border-radius: 12px; padding: 18px; color: rgba(255,255,255,0.92); font-size: 0.92rem; line-height: 1.7; margin-top: 16px; }
+
+        /* ENGAGEMENT CARD */
+        .engagement-card { background: linear-gradient(135deg, #0f3460, #16213e); border-radius: 18px; padding: 26px; color: #fff; box-shadow: 0 8px 25px rgba(0,0,0,0.18); }
+        .eng-stat { background: rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; text-align: center; height: 100%; border: 1px solid rgba(255,255,255,0.06); }
+        .eng-stat .value { font-size: 1.45rem; font-weight: 700; }
+        .eng-stat .label { font-size: 0.76rem; color: rgba(255,255,255,0.6); margin-top: 4px; }
+
+        /* FORM */
+        .form-label { font-weight: 600; font-size: 0.85rem; color: #334155; }
+        .form-control, .form-select { border-radius: 10px; border: 1.5px solid #cbd5e1; padding: 10px 14px; font-size: 0.9rem; transition: border-color 0.2s, box-shadow 0.2s; }
+        .form-control:focus, .form-select:focus { border-color: #667eea; box-shadow: 0 0 0 3px rgba(102,126,234,0.15); }
+
+        /* BUTTONS */
+        .btn-primary-grad { background: linear-gradient(135deg, #667eea, #764ba2); border: none; color: #fff; border-radius: 10px; font-weight: 600; padding: 10px 20px; transition: all 0.2s; }
+        .btn-primary-grad:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(102,126,234,0.4); color: #fff; }
+        .btn-ai { background: linear-gradient(135deg, #1a1a2e, #16213e); border: 1px solid rgba(255,255,255,0.15); color: #fff; border-radius: 10px; font-weight: 600; padding: 9px 18px; transition: all 0.2s; }
+        .btn-ai:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); color: #fff; }
+        .btn-csv { background: linear-gradient(135deg, #11998e, #38ef7d); border: none; color: #fff; border-radius: 8px; font-weight: 600; font-size: 0.82rem; padding: 7px 16px; }
+        .btn-csv:hover { opacity: 0.9; color: #fff; }
+
+        /* TABLE */
+        .table th { font-size: 0.8rem; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; background: #f8fafc; }
+        .event-meta { font-size: 0.82rem; color: #64748b; display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+        .badge-category { font-size: 0.73rem; padding: 4px 12px; border-radius: 20px; font-weight: 600; }
+
+        /* QUICK ACTION TILES */
+        .action-tile {
+            background: #fff; border-radius: 14px; padding: 16px 20px;
+            border: 1px solid #e2e8f0; cursor: pointer; transition: all 0.2s;
+            display: flex; align-items: center; gap: 14px;
+        }
+        .action-tile:hover {
+            border-color: #667eea; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(102,126,234,0.15);
+        }
+
+        .toast-container { z-index: 9999; }
+        .empty-state { text-align: center; padding: 50px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 3rem; margin-bottom: 12px; display: block; color: #cbd5e1; }
+        .skeleton { background: linear-gradient(90deg,#e9ecef 25%,#f5f5f5 50%,#e9ecef 75%); background-size: 200% 100%; animation: skel 1.5s infinite; border-radius: 8px; }
+        @keyframes skel { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+        footer { background: linear-gradient(135deg,#1a1a2e,#16213e); border-top: 1px solid rgba(255,255,255,0.06); padding: 28px 0 20px; margin-top: 40px; }
+        .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+        .footer-brand { color: #fff; font-weight: 700; font-size: 1rem; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; margin: 0 8px; transition: color 0.2s; }
+        .footer-links a:hover { color: #667eea; }
+        footer .copyright { color: rgba(255,255,255,0.3); font-size: 0.78rem; width: 100%; text-align: center; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <div class="d-flex align-items-center gap-2">
+            <span class="navbar-brand d-flex align-items-center gap-2 mb-0">
+                <span>🎓 CampuSphere AI</span>
+            </span>
+            <span class="text-white-50 small d-none d-md-inline" style="font-size:0.78rem; border-left: 1px solid rgba(255,255,255,0.25); padding-left: 10px;">Event Management System</span>
+            <span class="badge bg-warning text-dark fw-bold" style="font-size:0.68rem;border-radius:6px;letter-spacing:0.5px;">ADMIN PORTAL</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white-50 small"><i class="bi bi-person-badge me-1"></i><span id="adminName">Admin</span></span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- MODULAR SERVICE NAVIGATION BAR -->
+<nav class="admin-nav py-2">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <ul class="nav nav-pills gap-1" id="adminNavPills">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab-overview" onclick="switchAdminService('overview')">
+                    <i class="bi bi-grid-1x2-fill"></i>Overview
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-events" onclick="switchAdminService('events')">
+                    <i class="bi bi-calendar-event"></i>Events Management
+                    <span class="badge bg-primary ms-1" id="navEventCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-students" onclick="switchAdminService('students')">
+                    <i class="bi bi-people-fill"></i>Registered Students
+                    <span class="badge bg-success ms-1" id="navStudentCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-feedback" onclick="switchAdminService('feedback')">
+                    <i class="bi bi-chat-heart-fill"></i>Event Feedback &amp; AI
+                    <span class="badge bg-warning text-dark ms-1" id="navFeedbackCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-insights" onclick="switchAdminService('insights')">
+                    <i class="bi bi-graph-up-arrow"></i>Engagement Insights
+                </a>
+            </li>
+        </ul>
+        <button class="btn btn-sm btn-outline-secondary" onclick="refreshAllData()" title="Reload all records">
+            <i class="bi bi-arrow-clockwise me-1"></i>Sync Data
+        </button>
+    </div>
+</nav>
+
+<main>
+<div class="container py-4">
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 1: OVERVIEW DASHBOARD -->
+    <!-- ============================================================ -->
+    <div id="page-overview" class="admin-page">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">Campus Overview</h2>
+                <p class="text-muted mb-0">High-level activity metrics, event performance, and administrative quick actions.</p>
+            </div>
+            <button class="btn btn-primary-grad" onclick="switchAdminService('events')">
+                <i class="bi bi-plus-circle me-1"></i>Create Event
+            </button>
+        </div>
+
+        <!-- STAT CARDS (Clickable shortcuts) -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card primary" onclick="switchAdminService('events')" title="View Events Management">
+                    <div class="stat-icon bg-primary bg-opacity-10">📅</div>
+                    <div class="stat-value" id="statTotalEvents">—</div>
+                    <div class="stat-label">Total Events &rarr;</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card success" onclick="switchAdminService('students')" title="Open Registered Students Directory">
+                    <div class="stat-icon bg-success bg-opacity-10">👥</div>
+                    <div class="stat-value" id="statTotalStudents">—</div>
+                    <div class="stat-label">Registered Students &rarr;</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card info" onclick="switchAdminService('events')" title="View Registrations">
+                    <div class="stat-icon bg-info bg-opacity-10">🎟️</div>
+                    <div class="stat-value" id="statTotalRegs">—</div>
+                    <div class="stat-label">Total Registrations &rarr;</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card warning" onclick="switchAdminService('feedback')" title="Open Event Feedback & AI Analytics">
+                    <div class="stat-icon bg-warning bg-opacity-10">💬</div>
+                    <div class="stat-value" id="statTotalFeedback">0</div>
+                    <div class="stat-label">Event Feedbacks &rarr;</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- QUICK LAUNCHPAD -->
+        <h5 class="fw-bold mb-3 text-secondary text-uppercase" style="font-size:0.8rem; letter-spacing:0.8px;">Admin Service Shortcuts</h5>
+        <div class="row g-3 mb-5">
+            <div class="col-md-4">
+                <div class="action-tile" onclick="switchAdminService('events')">
+                    <div class="fs-3 text-primary">📅</div>
+                    <div>
+                        <div class="fw-bold text-dark">Events Management</div>
+                        <small class="text-muted">Create events, edit status, and track attendee capacity</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-tile" onclick="switchAdminService('students')">
+                    <div class="fs-3 text-success">👥</div>
+                    <div>
+                        <div class="fw-bold text-dark">Registered Students</div>
+                        <small class="text-muted">Browse directory, filter by department &amp; view signups</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="action-tile" onclick="switchAdminService('feedback')">
+                    <div class="fs-3 text-warning">🤖</div>
+                    <div>
+                        <div class="fw-bold text-dark">Feedback &amp; AI Analytics</div>
+                        <small class="text-muted">Review student ratings, sentiment, &amp; AI summaries</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT ACTIVITY SNAPSHOT -->
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="content-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-clock-history me-2 text-primary"></i>Upcoming &amp; Active Events</h6>
+                        <a href="javascript:void(0)" onclick="switchAdminService('events')" class="text-decoration-none small fw-bold">View All &rarr;</a>
+                    </div>
+                    <div id="overviewEventsPreview">
+                        <div class="text-muted small py-3">Loading active events...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="content-card p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="fw-bold mb-0"><i class="bi bi-chat-left-quote me-2 text-warning"></i>Recent Feedback</h6>
+                        <a href="javascript:void(0)" onclick="switchAdminService('feedback')" class="text-decoration-none small fw-bold">View All &rarr;</a>
+                    </div>
+                    <div id="overviewFeedbackPreview">
+                        <div class="text-muted small py-3">Loading recent feedback...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 2: EVENTS MANAGEMENT -->
+    <!-- ============================================================ -->
+    <div id="page-events" class="admin-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">Events Management</h2>
+                <p class="text-muted mb-0">Create new campus events, configure venue capacity, update lifecycle statuses, and manage attendees.</p>
+            </div>
+        </div>
+
+        <!-- CREATE EVENT FORM -->
+        <div class="content-card mb-5 border">
+            <div class="p-4 bg-light border-bottom d-flex align-items-center justify-content-between">
+                <h5 class="fw-bold mb-0"><i class="bi bi-calendar-plus me-2 text-primary"></i>Create New Event</h5>
+                <span class="badge bg-primary bg-opacity-10 text-primary">Admin Only</span>
+            </div>
+            <div class="p-4">
+                <form id="eventForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Event Title *</label>
+                            <input type="text" id="title" class="form-control" placeholder="e.g. AI &amp; Cloud Summit 2026" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Category *</label>
+                            <select id="category" class="form-select" required>
+                                <option value="">Select Category</option>
+                                <option>Technology</option><option>Competition</option>
+                                <option>Sports</option><option>Cultural</option>
+                                <option>Workshop</option><option>Seminar</option><option>General</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Department</label>
+                            <input type="text" id="department" class="form-control" placeholder="e.g. Computer Science">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Description *</label>
+                            <textarea id="description" class="form-control" rows="3" placeholder="Describe the objectives, speakers, agenda, and expectations..." required></textarea>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Organizer *</label>
+                            <input type="text" id="organizer" class="form-control" placeholder="e.g. Tech Club / ACM" required>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">Date *</label>
+                            <input type="date" id="eventDate" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Time *</label>
+                            <input type="time" id="eventTime" class="form-control" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Capacity *</label>
+                            <input type="number" id="capacity" class="form-control" min="1" placeholder="e.g. 150" required>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="form-label">Initial Status</label>
+                            <select id="initialStatus" class="form-select">
+                                <option value="UPCOMING">UPCOMING</option>
+                                <option value="ONGOING">ONGOING</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Venue Location *</label>
+                            <input type="text" id="venue" class="form-control" placeholder="e.g. Main Auditorium, Block A, Room 301" required>
+                        </div>
+                        <div class="col-12 text-end mt-4">
+                            <button type="reset" class="btn btn-light me-2">Clear Form</button>
+                            <button type="submit" class="btn btn-primary-grad" id="createEventBtn">
+                                <i class="bi bi-plus-circle me-2"></i>Publish Event
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- EVENTS DIRECTORY & FILTERS -->
+        <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <h4 class="fw-bold mb-0">
+                All Campus Events
+                <span class="badge bg-primary bg-opacity-10 text-primary fw-normal ms-2" id="eventCountBadge">0 events</span>
+            </h4>
+            <div class="d-flex gap-2">
+                <input type="text" id="eventSearchInput" class="form-control form-control-sm" placeholder="Search events..." style="width:200px;" oninput="filterEventCards()">
+                <select id="eventCategoryFilter" class="form-select form-select-sm" style="width:160px;" onchange="filterEventCards()">
+                    <option value="">All Categories</option>
+                    <option>Technology</option><option>Competition</option><option>Sports</option>
+                    <option>Cultural</option><option>Workshop</option><option>Seminar</option><option>General</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="eventsContainer" class="row g-4">
+            <div class="col-12"><div class="skeleton" style="height:200px;"></div></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 3: REGISTERED STUDENTS (Dedicated Separate Page) -->
+    <!-- ============================================================ -->
+    <div id="page-students" class="admin-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">
+                    👥 Registered Students Directory
+                </h2>
+                <p class="text-muted mb-0">Complete roster of students registered on the campus management system.</p>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fs-6 px-3 py-2 fw-semibold" id="studentCountBadge">
+                Loading...
+            </span>
+        </div>
+
+        <!-- SEARCH & FILTER TOOLBAR -->
+        <div class="content-card p-3 mb-4 border">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-white"><i class="bi bi-search text-muted"></i></span>
+                        <input type="text" id="studentSearch" class="form-control" placeholder="Search by name, email, or interests..." oninput="filterStudentsTable()">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <select id="studentDeptFilter" class="form-select" onchange="filterStudentsTable()">
+                        <option value="">All Departments</option>
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <select id="studentYearFilter" class="form-select" onchange="filterStudentsTable()">
+                        <option value="">All Years</option>
+                        <option value="1">1st Year</option>
+                        <option value="2">2nd Year</option>
+                        <option value="3">3rd Year</option>
+                        <option value="4">4th Year</option>
+                    </select>
+                </div>
+                <div class="col-md-2 text-end">
+                    <button class="btn btn-outline-secondary w-100" onclick="resetStudentFilters()">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENTS DIRECTORY TABLE -->
+        <div class="content-card border" id="studentsContainer">
+            <div class="skeleton" style="height:250px;"></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 4: EVENT FEEDBACK & AI ANALYTICS -->
+    <!-- ============================================================ -->
+    <div id="page-feedback" class="admin-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">
+                    💬 Event Feedback &amp; AI Sentiment Analytics
+                </h2>
+                <p class="text-muted mb-0">Evaluate student feedback, average ratings, sentiment breakdown, and generate AI insights.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-csv" onclick="exportAllFeedbackCSV()">
+                    <i class="bi bi-download me-1"></i>Export Feedback CSV
+                </button>
+            </div>
+        </div>
+
+        <!-- FEEDBACK KPI SUMMARY CARDS -->
+        <div class="row g-3 mb-4">
+            <div class="col-6 col-md-3">
+                <div class="stat-card primary">
+                    <div class="stat-icon bg-primary bg-opacity-10">💬</div>
+                    <div class="stat-value" id="feedbackTotalCount">0</div>
+                    <div class="stat-label">Total Feedbacks</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card warning">
+                    <div class="stat-icon bg-warning bg-opacity-10">⭐</div>
+                    <div class="stat-value" id="feedbackAvgRating">0.0</div>
+                    <div class="stat-label">Average Rating (out of 5)</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card success">
+                    <div class="stat-icon bg-success bg-opacity-10">😊</div>
+                    <div class="stat-value text-success" id="feedbackPosCount">0</div>
+                    <div class="stat-label">Positive Sentiment (<span id="feedbackPosPct">0%</span>)</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card info">
+                    <div class="stat-icon bg-info bg-opacity-10">🧠</div>
+                    <div class="stat-value" id="feedbackEventsWithFeedback">0</div>
+                    <div class="stat-label">Events Reviewed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI SUMMARY GENERATOR TOOL -->
+        <div class="ai-analytics-card mb-5">
+            <div class="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
+                <div>
+                    <span class="badge bg-primary bg-opacity-25 text-white mb-2 px-3 py-1">🤖 AI FEEDBACK SYNTHESIZER</span>
+                    <h4 class="fw-bold mb-0">Generate Event Feedback Summary</h4>
+                    <p class="text-white-50 small mb-0">Summarize all written attendee feedback into key highlights, sentiment, and improvements.</p>
+                </div>
+            </div>
+            <div class="row g-3 align-items-center mt-1">
+                <div class="col-md-7">
+                    <select id="aiSummaryEventSelect" class="form-select bg-dark text-white border-secondary">
+                        <option value="">-- Choose an event to analyze --</option>
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <button class="btn btn-primary-grad w-100" id="btnGenerateSelectedSummary" onclick="triggerAISummaryFromFeedbackPage()">
+                        🧠 Generate AI Summary
+                    </button>
+                </div>
+            </div>
+            <div id="aiSummaryResultArea" class="mt-3" style="display:none;">
+                <div class="ai-summary-box" id="aiSummaryResultText"></div>
+            </div>
+        </div>
+
+        <!-- FEEDBACK FILTER BAR -->
+        <div class="content-card p-3 mb-3 border">
+            <div class="row g-3 align-items-center">
+                <div class="col-md-5">
+                    <select id="feedbackEventFilter" class="form-select" onchange="filterFeedbackTable()">
+                        <option value="">All Events (Showing all feedback)</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select id="feedbackSentimentFilter" class="form-select" onchange="filterFeedbackTable()">
+                        <option value="">All Sentiments</option>
+                        <option value="POSITIVE">Positive 😊</option>
+                        <option value="NEUTRAL">Neutral 😐</option>
+                        <option value="NEGATIVE">Negative 😟</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <select id="feedbackRatingFilter" class="form-select" onchange="filterFeedbackTable()">
+                        <option value="">All Ratings</option>
+                        <option value="5">5 Stars ⭐⭐⭐⭐⭐</option>
+                        <option value="4">4 Stars ⭐⭐⭐⭐</option>
+                        <option value="3">3 Stars ⭐⭐⭐</option>
+                        <option value="2">2 Stars ⭐⭐</option>
+                        <option value="1">1 Star ⭐</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- FEEDBACK TABLE -->
+        <div class="content-card border" id="allFeedbackContainer">
+            <div class="skeleton" style="height:250px;"></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 5: ENGAGEMENT INSIGHTS -->
+    <!-- ============================================================ -->
+    <div id="page-insights" class="admin-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">
+                    📊 Campus Engagement Insights
+                </h2>
+                <p class="text-muted mb-0">Analyze registration trends across departments, event categories, and student communities.</p>
+            </div>
+        </div>
+
+        <div class="engagement-card mb-4" id="engagementContainer">
+            <div class="text-center py-4 text-white-50">Loading engagement metrics...</div>
+        </div>
+
+        <!-- REGISTRATIONS BY CATEGORY & DEPARTMENT -->
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="content-card p-4 h-100 border">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-tag-fill me-2 text-primary"></i>Registrations by Category</h6>
+                    <div id="categoryBreakdownArea">
+                        <div class="text-muted small">Loading category breakdown...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="content-card p-4 h-100 border">
+                    <h6 class="fw-bold mb-3"><i class="bi bi-mortarboard-fill me-2 text-success"></i>Department Participation</h6>
+                    <div id="departmentBreakdownArea">
+                        <div class="text-muted small">Loading department participation...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</main>
+
+
+<!-- EDIT EVENT MODAL -->
+<div class="modal fade" id="editEventModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-pencil-square me-2"></i>Edit Event</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <input type="hidden" id="editEventId">
+                <div class="row g-3">
+                    <div class="col-md-6"><label class="form-label">Title *</label><input type="text" id="editTitle" class="form-control" required></div>
+                    <div class="col-md-3"><label class="form-label">Category *</label>
+                        <select id="editCategory" class="form-select">
+                            <option>Technology</option><option>Competition</option><option>Sports</option>
+                            <option>Cultural</option><option>Workshop</option><option>Seminar</option><option>General</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3"><label class="form-label">Status</label>
+                        <select id="editStatus" class="form-select">
+                            <option value="UPCOMING">UPCOMING</option>
+                            <option value="ONGOING">ONGOING</option>
+                            <option value="COMPLETED">COMPLETED</option>
+                            <option value="CANCELLED">CANCELLED</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6"><label class="form-label">Department</label><input type="text" id="editDepartment" class="form-control"></div>
+                    <div class="col-md-6"><label class="form-label">Organizer *</label><input type="text" id="editOrganizer" class="form-control" required></div>
+                    <div class="col-12"><label class="form-label">Description *</label><textarea id="editDescription" class="form-control" rows="3" required></textarea></div>
+                    <div class="col-md-4"><label class="form-label">Date *</label><input type="date" id="editEventDate" class="form-control" required></div>
+                    <div class="col-md-4"><label class="form-label">Time *</label><input type="time" id="editEventTime" class="form-control" required></div>
+                    <div class="col-md-4"><label class="form-label">Capacity *</label><input type="number" id="editCapacity" class="form-control" min="1" required></div>
+                    <div class="col-12"><label class="form-label">Venue *</label><input type="text" id="editVenue" class="form-control" required></div>
+                </div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary-grad" onclick="saveEditEvent()"><i class="bi bi-check-lg me-1"></i>Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EVENT REGISTRATIONS MODAL -->
+<div class="modal fade" id="registrationsModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-people me-2"></i>Event Registrations</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-csv" onclick="exportRegistrationsCSV()">
+                        <i class="bi bi-download me-1"></i>Export CSV
+                    </button>
+                </div>
+                <div id="registrationsModalContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EVENT FEEDBACK MODAL (Quick view from card) -->
+<div class="modal fade" id="feedbackListModal" tabindex="-1">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-chat-square-dots me-2"></i>Event Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="d-flex justify-content-end mb-3">
+                    <button class="btn btn-csv" onclick="exportFeedbackCSV()">
+                        <i class="bi bi-download me-1"></i>Export CSV
+                    </button>
+                </div>
+                <div id="feedbackListContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STUDENT REGISTRATIONS MODAL (From Registered Students page) -->
+<div class="modal fade" id="studentRegsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-ticket-perforated me-2"></i>Student Registrations</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4" id="studentRegsModalContent"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toastMsg" class="toast align-items-center border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="toastText"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand">🎓 CampuSphere AI · Event Management System</div>
+            <div class="footer-links">
+                <a href="#" onclick="switchAdminService('overview')">Overview</a>
+                <a href="#" onclick="switchAdminService('events')">Events</a>
+                <a href="#" onclick="switchAdminService('students')">Students</a>
+                <a href="#" onclick="switchAdminService('feedback')">Feedback</a>
+                <a href="#" onclick="switchAdminService('insights')">Insights</a>
+                <a href="/login" onclick="logout()">Logout</a>
+            </div>
+        </div>
+        <div class="copyright">© 2026 CampuSphere AI — Smart Campus Event Management System &nbsp;·&nbsp; Powered by 🤖 AI</div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const auth = localStorage.getItem('auth');
+if (!auth) window.location.href = '/login';
+
+let allEvents = [];
+let allStudents = [];
+let allFeedback = [];
+let allRegistrations = [];
+let currentRegData = [];
+let currentFeedbackData = [];
+let currentEventTitle = '';
+
+// ============================================================
+// NAVIGATION & MODULAR SERVICE SWITCHING
+// ============================================================
+function switchAdminService(serviceName) {
+    const validServices = ['overview', 'events', 'students', 'feedback', 'insights'];
+    if (!validServices.includes(serviceName)) serviceName = 'overview';
+
+    // Hide all service views
+    document.querySelectorAll('.admin-page').forEach(el => el.style.display = 'none');
+    // Remove active state from all nav pills
+    document.querySelectorAll('#adminNavPills .nav-link').forEach(el => el.classList.remove('active'));
+
+    // Show target service view
+    const targetPage = document.getElementById(`page-${serviceName}`);
+    if (targetPage) targetPage.style.display = 'block';
+
+    // Set active nav pill
+    const targetPill = document.getElementById(`tab-${serviceName}`);
+    if (targetPill) targetPill.classList.add('active');
+
+    // Update URL hash without scrolling
+    if (window.location.hash.substring(1) !== serviceName) {
+        history.pushState(null, null, `#${serviceName}`);
+    }
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.substring(1);
+    if (hash) switchAdminService(hash);
+});
+
+function showToast(msg, type='info') {
+    const toast = document.getElementById('toastMsg');
+    const toastText = document.getElementById('toastText');
+    toastText.textContent = msg;
+    toast.className = `toast align-items-center border-0 text-white ${type==='error'?'bg-danger':type==='success'?'bg-success':'bg-primary'}`;
+    new bootstrap.Toast(toast, {delay: 3200}).show();
+}
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function loadAdminProfile() {
+    try {
+        const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Basic ' + auth } });
+        if (r.ok) {
+            const u = await r.json();
+            if (u.role !== 'ADMIN') { window.location.href = '/dashboard'; return; }
+            document.getElementById('adminName').textContent = u.name || u.email;
+        } else {
+            localStorage.removeItem('auth'); window.location.href = '/login';
+        }
+    } catch(e) { console.error(e); }
+}
+
+// ============================================================
+// LOAD EVENTS
+// ============================================================
+async function loadEvents() {
+    try {
+        const r = await fetch('/api/events');
+        if (!r.ok) {
+            document.getElementById('eventsContainer').innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to load events.</div></div>';
+            return;
+        }
+        allEvents = await r.json();
+        document.getElementById('statTotalEvents').textContent = allEvents.length;
+        document.getElementById('eventCountBadge').textContent = `${allEvents.length} event${allEvents.length !== 1 ? 's' : ''}`;
+        document.getElementById('navEventCount').textContent = allEvents.length;
+
+        // Populate event dropdowns across the dashboard
+        populateEventDropdowns();
+
+        // Fetch registration counts for capacity bars
+        await Promise.all(allEvents.map(async ev => {
+            try {
+                const cr = await fetch(`/api/events/${ev.id}/registration-count`);
+                if (cr.ok) ev._regCount = await cr.json();
+            } catch(e) { ev._regCount = 0; }
+        }));
+
+        renderEventCards(allEvents);
+        renderOverviewEventsPreview(allEvents);
+    } catch(e) { console.error(e); }
+}
+
+function populateEventDropdowns() {
+    const summarySelect = document.getElementById('aiSummaryEventSelect');
+    const feedbackFilter = document.getElementById('feedbackEventFilter');
+
+    if (summarySelect) {
+        summarySelect.innerHTML = '<option value="">-- Choose an event to analyze --</option>' +
+            allEvents.map(ev => `<option value="${ev.id}">${escHtml(ev.title)} (${ev.eventDate || 'TBD'})</option>`).join('');
+    }
+    if (feedbackFilter) {
+        feedbackFilter.innerHTML = '<option value="">All Events (Showing all feedback)</option>' +
+            allEvents.map(ev => `<option value="${ev.id}">${escHtml(ev.title)}</option>`).join('');
+    }
+}
+
+function renderEventCards(eventsList) {
+    const container = document.getElementById('eventsContainer');
+    if (!eventsList.length) {
+        container.innerHTML = `<div class="col-12"><div class="empty-state content-card p-5"><i class="bi bi-calendar-x"></i><p class="fw-semibold">No events found matching your criteria.</p></div></div>`;
+        return;
+    }
+    container.innerHTML = '';
+    eventsList.forEach(ev => {
+        const color = getCategoryColor(ev.category);
+        const status = ev.status || 'UPCOMING';
+        const capPct = ev.capacity ? Math.min(Math.round((ev._regCount || 0) / ev.capacity * 100), 100) : 0;
+        const capClass = capPct >= 100 ? 'cap-full' : capPct >= 75 ? 'cap-warn' : 'cap-ok';
+
+        container.innerHTML += `
+        <div class="col-md-6 col-lg-4">
+            <div class="event-card-admin card p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="d-flex gap-2 align-items-center flex-wrap">
+                        <span class="badge-category badge" style="background:${color}15;color:${color};border:1px solid ${color}30">${escHtml(ev.category || 'General')}</span>
+                        <span class="status-pill status-${status}">${status}</span>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-light border" data-bs-toggle="dropdown"><i class="bi bi-three-dots-vertical"></i></button>
+                        <ul class="dropdown-menu dropdown-menu-end shadow">
+                            <li><a class="dropdown-item" href="javascript:void(0)" onclick="openEditModal(${ev.id})"><i class="bi bi-pencil me-2 text-primary"></i>Edit Event</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li class="px-3 pb-1"><small class="text-muted fw-semibold">Quick Status</small></li>
+                            ${['UPCOMING','ONGOING','COMPLETED','CANCELLED'].map(s => `
+                            <li><a class="dropdown-item${s === status ? ' active' : ''}" href="javascript:void(0)" onclick="changeEventStatus(${ev.id},'${s}')">
+                                <span class="status-pill status-${s} me-2">${s}</span>
+                            </a></li>`).join('')}
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="deleteEvent(${ev.id},'${escHtml(ev.title).replace(/'/g,"\\'")}')"><i class="bi bi-trash me-2"></i>Delete Event</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <h6 class="fw-bold mt-2 mb-2">${escHtml(ev.title)}</h6>
+                <p class="text-muted small mb-3" style="line-height:1.6;font-size:0.82rem;">${escHtml((ev.description||'').substring(0,90))}${(ev.description||'').length>90?'...':''}</p>
+                <div class="event-meta"><i class="bi bi-calendar3"></i>${ev.eventDate || 'TBD'} · <i class="bi bi-clock"></i>${ev.eventTime || 'TBD'}</div>
+                <div class="event-meta"><i class="bi bi-geo-alt"></i>${escHtml(ev.venue || 'TBD')}</div>
+                <div class="event-meta"><i class="bi bi-person-workspace"></i>${escHtml(ev.organizer || '—')}</div>
+
+                ${ev.capacity ? `
+                <div class="mt-2 mb-2">
+                    <div class="d-flex justify-content-between small">
+                        <span class="text-muted">Capacity</span>
+                        <span class="${capPct>=100?'text-danger fw-bold':'text-muted'}">${ev._regCount||0}/${ev.capacity} (${capPct}%)</span>
+                    </div>
+                    <div class="capacity-bar ${capClass}"><div class="capacity-fill" style="width:${capPct}%"></div></div>
+                </div>` : ''}
+
+                <hr class="my-3">
+                <div class="row g-2">
+                    <div class="col-6">
+                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="viewRegistrations(${ev.id},'${escHtml(ev.title).replace(/'/g,"\\'")}')">
+                            <i class="bi bi-people me-1"></i>Signups (${ev._regCount||0})
+                        </button>
+                    </div>
+                    <div class="col-6">
+                        <button class="btn btn-sm btn-outline-secondary w-100" onclick="viewFeedback(${ev.id},'${escHtml(ev.title).replace(/'/g,"\\'")}')">
+                            <i class="bi bi-chat-dots me-1"></i>Feedback
+                        </button>
+                    </div>
+                    <div class="col-12">
+                        <button class="btn btn-sm btn-ai w-100" onclick="quickAnalyzeFromCard(${ev.id})">
+                            🤖 Analyze with AI
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+function filterEventCards() {
+    const q = (document.getElementById('eventSearchInput').value || '').toLowerCase().trim();
+    const cat = document.getElementById('eventCategoryFilter').value;
+
+    const filtered = allEvents.filter(ev => {
+        const matchesQ = !q || (ev.title && ev.title.toLowerCase().includes(q)) || (ev.description && ev.description.toLowerCase().includes(q));
+        const matchesCat = !cat || ev.category === cat;
+        return matchesQ && matchesCat;
+    });
+    renderEventCards(filtered);
+}
+
+function renderOverviewEventsPreview(events) {
+    const container = document.getElementById('overviewEventsPreview');
+    if (!events.length) {
+        container.innerHTML = '<div class="text-muted small">No events scheduled.</div>';
+        return;
+    }
+    const recent = events.slice(0, 4);
+    container.innerHTML = recent.map(ev => `
+        <div class="d-flex align-items-center justify-content-between p-2 border-bottom">
+            <div>
+                <div class="fw-semibold text-dark" style="font-size:0.9rem;">${escHtml(ev.title)}</div>
+                <div class="small text-muted"><i class="bi bi-calendar3 me-1"></i>${ev.eventDate || 'TBD'} · ${escHtml(ev.venue || 'TBD')}</div>
+            </div>
+            <span class="status-pill status-${ev.status || 'UPCOMING'}">${ev.status || 'UPCOMING'}</span>
+        </div>
+    `).join('');
+}
+
+// ============================================================
+// QUICK STATUS UPDATE
+// ============================================================
+async function changeEventStatus(eventId, status) {
+    try {
+        const r = await fetch(`/api/events/${eventId}/status`, {
+            method: 'PATCH',
+            headers: { 'Authorization': 'Basic ' + auth, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
+        });
+        if (r.ok) {
+            showToast(`✅ Status updated to ${status}`, 'success');
+            await loadEvents();
+        } else {
+            showToast('❌ Failed to update status.', 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+// ============================================================
+// SERVICE 3: REGISTERED STUDENTS (Dedicated Directory)
+// ============================================================
+async function loadStudents() {
+    try {
+        const r = await fetch('/api/students', { headers: { 'Authorization': 'Basic ' + auth } });
+        if (!r.ok) {
+            document.getElementById('studentsContainer').innerHTML = '<div class="p-4 text-danger">Failed to load students.</div>';
+            return;
+        }
+        allStudents = await r.json();
+        const students = allStudents.filter(s => !s.role || s.role === 'STUDENT');
+
+        document.getElementById('statTotalStudents').textContent = students.length;
+        document.getElementById('studentCountBadge').textContent = `${students.length} Student${students.length !== 1 ? 's' : ''}`;
+        document.getElementById('navStudentCount').textContent = students.length;
+
+        // Populate department filter dropdown
+        const depts = [...new Set(students.map(s => s.department).filter(Boolean))].sort();
+        const deptFilter = document.getElementById('studentDeptFilter');
+        if (deptFilter) {
+            deptFilter.innerHTML = '<option value="">All Departments</option>' +
+                depts.map(d => `<option value="${escHtml(d)}">${escHtml(d)}</option>`).join('');
+        }
+
+        renderStudentsTable(students);
+    } catch(e) { console.error(e); }
+}
+
+function renderStudentsTable(studentsList) {
+    const container = document.getElementById('studentsContainer');
+    if (!studentsList.length) {
+        container.innerHTML = '<div class="empty-state"><i class="bi bi-people"></i><p>No students match the search filter.</p></div>';
+        return;
+    }
+
+    const rows = studentsList.map((s, i) => `
+        <tr>
+            <td class="text-muted">${i + 1}</td>
+            <td>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold" style="width:34px;height:34px;font-size:0.85rem;">
+                        ${(s.name || 'S').charAt(0).toUpperCase()}
+                    </div>
+                    <div>
+                        <div class="fw-bold text-dark" style="font-size:0.9rem;">${escHtml(s.name || '—')}</div>
+                        <span class="badge bg-light text-secondary border" style="font-size:0.68rem;">ID: #${s.id}</span>
+                    </div>
+                </div>
+            </td>
+            <td><a href="mailto:${escHtml(s.email)}" class="text-decoration-none text-muted small">${escHtml(s.email || '—')}</a></td>
+            <td><span class="badge bg-info-subtle text-info border border-info-subtle px-2 py-1">${escHtml(s.department || 'General')}</span></td>
+            <td>${s.year ? s.year + (['st','nd','rd','th'][s.year-1] || 'th') + ' Year' : '—'}</td>
+            <td>${s.interests ? s.interests.split(',').map(tag => `<span class="badge bg-light text-dark border me-1">${escHtml(tag.trim())}</span>`).join('') : '<span class="text-muted small">—</span>'}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary" onclick="viewStudentRegistrations(${s.id},'${escHtml(s.name||'Student').replace(/'/g,"\\'")}')">
+                    <i class="bi bi-ticket-detailed me-1"></i>Signups
+                </button>
+            </td>
+        </tr>
+    `).join('');
+
+    container.innerHTML = `
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Student Name</th>
+                        <th>Email Address</th>
+                        <th>Department</th>
+                        <th>Year</th>
+                        <th>Interests</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>
+    `;
+}
+
+function filterStudentsTable() {
+    const q = (document.getElementById('studentSearch').value || '').toLowerCase().trim();
+    const dept = document.getElementById('studentDeptFilter').value;
+    const year = document.getElementById('studentYearFilter').value;
+
+    const students = allStudents.filter(s => !s.role || s.role === 'STUDENT');
+
+    const filtered = students.filter(s => {
+        const matchesQ = !q ||
+            (s.name && s.name.toLowerCase().includes(q)) ||
+            (s.email && s.email.toLowerCase().includes(q)) ||
+            (s.interests && s.interests.toLowerCase().includes(q));
+        const matchesDept = !dept || s.department === dept;
+        const matchesYear = !year || String(s.year) === String(year);
+        return matchesQ && matchesDept && matchesYear;
+    });
+
+    renderStudentsTable(filtered);
+}
+
+function resetStudentFilters() {
+    document.getElementById('studentSearch').value = '';
+    document.getElementById('studentDeptFilter').value = '';
+    document.getElementById('studentYearFilter').value = '';
+    const students = allStudents.filter(s => !s.role || s.role === 'STUDENT');
+    renderStudentsTable(students);
+}
+
+async function viewStudentRegistrations(studentId, studentName) {
+    const modal = new bootstrap.Modal(document.getElementById('studentRegsModal'));
+    const content = document.getElementById('studentRegsModalContent');
+    content.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+    document.querySelector('#studentRegsModal .modal-title').innerHTML = `<i class="bi bi-ticket-perforated me-2"></i>Registrations for ${escHtml(studentName)}`;
+    modal.show();
+
+    try {
+        const r = await fetch(`/api/registrations/student/${studentId}`, { headers: { 'Authorization': 'Basic ' + auth } });
+        if (r.ok) {
+            const regs = await r.json();
+            if (!regs.length) {
+                content.innerHTML = '<div class="empty-state"><i class="bi bi-calendar-x"></i><p>This student has not registered for any events yet.</p></div>';
+                return;
+            }
+            content.innerHTML = `
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                            <tr><th>Event</th><th>Date</th><th>Venue</th><th>Registered On</th><th>Status</th></tr>
+                        </thead>
+                        <tbody>
+                            ${regs.map(reg => `
+                                <tr>
+                                    <td class="fw-semibold">${escHtml(reg.event?.title || '—')}</td>
+                                    <td>${reg.event?.eventDate || '—'}</td>
+                                    <td>${escHtml(reg.event?.venue || '—')}</td>
+                                    <td>${new Date(reg.registrationDate).toLocaleDateString('en-IN')}</td>
+                                    <td><span class="status-pill status-${reg.event?.status || 'UPCOMING'}">${reg.event?.status || 'UPCOMING'}</span></td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        } else {
+            content.innerHTML = '<div class="alert alert-danger">Failed to load student registrations.</div>';
+        }
+    } catch(e) { content.innerHTML = '<div class="alert alert-danger">Error connecting to server.</div>'; }
+}
+
+// ============================================================
+// SERVICE 4: EVENT FEEDBACK & AI ANALYTICS
+// ============================================================
+async function loadAllFeedback() {
+    try {
+        const r = await fetch('/api/feedback', { headers: { 'Authorization': 'Basic ' + auth } });
+        if (r.ok) {
+            allFeedback = await r.json();
+            document.getElementById('statTotalFeedback').textContent = allFeedback.length;
+            document.getElementById('navFeedbackCount').textContent = allFeedback.length;
+            document.getElementById('feedbackTotalCount').textContent = allFeedback.length;
+
+            // Compute metrics
+            computeFeedbackKPIs(allFeedback);
+            renderAllFeedbackTable(allFeedback);
+            renderOverviewFeedbackPreview(allFeedback);
+        }
+    } catch(e) { console.error('Failed to load feedback:', e); }
+}
+
+function computeFeedbackKPIs(feedbacks) {
+    if (!feedbacks.length) {
+        document.getElementById('feedbackAvgRating').textContent = '0.0';
+        document.getElementById('feedbackPosCount').textContent = '0';
+        document.getElementById('feedbackPosPct').textContent = '0%';
+        document.getElementById('feedbackEventsWithFeedback').textContent = '0';
+        return;
+    }
+
+    const avg = (feedbacks.reduce((sum, f) => sum + (f.rating || 0), 0) / feedbacks.length).toFixed(1);
+    document.getElementById('feedbackAvgRating').textContent = avg;
+
+    const posCount = feedbacks.filter(f => f.sentiment === 'POSITIVE').length;
+    const posPct = Math.round((posCount / feedbacks.length) * 100);
+    document.getElementById('feedbackPosCount').textContent = posCount;
+    document.getElementById('feedbackPosPct').textContent = `${posPct}%`;
+
+    const distinctEvents = new Set(feedbacks.map(f => f.event?.id).filter(Boolean));
+    document.getElementById('feedbackEventsWithFeedback').textContent = distinctEvents.size;
+}
+
+function renderAllFeedbackTable(feedbacksList) {
+    const container = document.getElementById('allFeedbackContainer');
+    if (!feedbacksList.length) {
+        container.innerHTML = '<div class="empty-state"><i class="bi bi-chat-square-text"></i><p>No feedback entries found.</p></div>';
+        return;
+    }
+
+    const stars = n => '⭐'.repeat(n || 0);
+    const sentBadge = s => {
+        const m = { POSITIVE: 'bg-success', NEGATIVE: 'bg-danger', NEUTRAL: 'bg-secondary' };
+        return `<span class="badge ${m[s] || 'bg-secondary'}">${s || 'NEUTRAL'}</span>`;
+    };
+
+    const rows = feedbacksList.map((f, i) => `
+        <tr>
+            <td class="text-muted">${i + 1}</td>
+            <td class="fw-semibold">${escHtml(f.event?.title || 'Campus Event')}</td>
+            <td>
+                <div class="fw-semibold text-dark" style="font-size:0.88rem;">${escHtml(f.student?.name || 'Student')}</div>
+                <div class="small text-muted">${escHtml(f.student?.email || '—')}</div>
+            </td>
+            <td>
+                <span class="text-warning">${stars(f.rating)}</span>
+                <span class="small fw-bold ms-1 text-muted">(${f.rating}/5)</span>
+            </td>
+            <td style="max-width:320px;">
+                <div style="font-size:0.86rem; color:#334155; line-height:1.5;">${escHtml(f.comment || '—')}</div>
+            </td>
+            <td>
+                ${sentBadge(f.sentiment)}
+                ${f.sentimentScore ? `<div class="small text-muted mt-1">${(f.sentimentScore*100).toFixed(0)}% conf.</div>` : ''}
+            </td>
+            <td class="small text-muted">${f.submittedAt ? new Date(f.submittedAt).toLocaleDateString('en-IN') : '—'}</td>
+        </tr>
+    `).join('');
+
+    container.innerHTML = `
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Event Title</th>
+                        <th>Student</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Sentiment</th>
+                        <th>Submitted On</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>
+    `;
+}
+
+function filterFeedbackTable() {
+    const eventId = document.getElementById('feedbackEventFilter').value;
+    const sentiment = document.getElementById('feedbackSentimentFilter').value;
+    const rating = document.getElementById('feedbackRatingFilter').value;
+
+    const filtered = allFeedback.filter(f => {
+        const matchesEvent = !eventId || String(f.event?.id) === String(eventId);
+        const matchesSentiment = !sentiment || f.sentiment === sentiment;
+        const matchesRating = !rating || String(f.rating) === String(rating);
+        return matchesEvent && matchesSentiment && matchesRating;
+    });
+
+    renderAllFeedbackTable(filtered);
+}
+
+function renderOverviewFeedbackPreview(feedbacks) {
+    const container = document.getElementById('overviewFeedbackPreview');
+    if (!feedbacks.length) {
+        container.innerHTML = '<div class="text-muted small">No feedback recorded yet.</div>';
+        return;
+    }
+    const recent = feedbacks.slice(0, 4);
+    container.innerHTML = recent.map(f => `
+        <div class="p-2 border-bottom">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <span class="fw-semibold text-dark small">${escHtml(f.student?.name || 'Student')}</span>
+                <span class="text-warning small">${'⭐'.repeat(f.rating||0)}</span>
+            </div>
+            <div class="small text-muted text-truncate">${escHtml(f.comment || '—')}</div>
+        </div>
+    `).join('');
+}
+
+async function triggerAISummaryFromFeedbackPage() {
+    const eventId = document.getElementById('aiSummaryEventSelect').value;
+    if (!eventId) {
+        showToast('Please choose an event first.', 'error');
+        return;
+    }
+
+    const btn = document.getElementById('btnGenerateSelectedSummary');
+    const resultArea = document.getElementById('aiSummaryResultArea');
+    const resultText = document.getElementById('aiSummaryResultText');
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Synthesizing feedback...';
+    resultArea.style.display = 'block';
+    resultText.innerHTML = '<div class="text-center py-2"><span class="spinner-border spinner-border-sm me-2"></span>AI is reading comments and extracting key themes...</div>';
+
+    try {
+        const r = await fetch(`/api/sentiment/event/${eventId}/summary`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+        if (r.ok) {
+            const summary = await r.text();
+            resultText.innerHTML = `
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span style="font-size:1.2rem;">🧠</span>
+                    <strong class="text-white">AI Feedback Synthesis</strong>
+                </div>
+                <div style="white-space:pre-wrap;">${escHtml(summary)}</div>
+            `;
+            showToast('✅ AI Summary synthesized successfully!', 'success');
+        } else {
+            resultText.innerHTML = '<span class="text-danger">Failed to generate summary. Ensure feedback comments are available for this event.</span>';
+        }
+    } catch(e) {
+        resultText.innerHTML = '<span class="text-danger">Error connecting to server.</span>';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '🧠 Regenerate AI Summary';
+    }
+}
+
+function quickAnalyzeFromCard(eventId) {
+    switchAdminService('feedback');
+    const select = document.getElementById('aiSummaryEventSelect');
+    if (select) {
+        select.value = eventId;
+        triggerAISummaryFromFeedbackPage();
+    }
+}
+
+function exportAllFeedbackCSV() {
+    if (!allFeedback.length) { showToast('No feedback data to export', 'error'); return; }
+    const header = '#,Event,Student Name,Student Email,Rating,Comment,Sentiment,Confidence,Submitted On';
+    const rows = allFeedback.map((f, i) => [
+        i + 1,
+        `"${(f.event?.title || '').replace(/"/g, '""')}"`,
+        `"${(f.student?.name || '').replace(/"/g, '""')}"`,
+        f.student?.email || '',
+        f.rating || '',
+        `"${(f.comment || '').replace(/"/g, '""')}"`,
+        f.sentiment || 'N/A',
+        f.sentimentScore ? (f.sentimentScore * 100).toFixed(0) + '%' : '—',
+        f.submittedAt ? new Date(f.submittedAt).toLocaleDateString('en-IN') : '—'
+    ].join(','));
+
+    downloadCSV([header, ...rows].join('\n'), 'campus_feedback_export.csv');
+    showToast('✅ Feedback CSV exported successfully!', 'success');
+}
+
+// ============================================================
+// SERVICE 5: ENGAGEMENT INSIGHTS
+// ============================================================
+async function loadEngagement() {
+    const container = document.getElementById('engagementContainer');
+    try {
+        const evRes = await fetch('/api/events');
+        if (!evRes.ok) return;
+        const events = await evRes.json();
+        if (!events.length) {
+            container.innerHTML = '<div class="text-center py-3 text-white-50 small">No events created yet.</div>';
+            return;
+        }
+
+        const regData = [];
+        await Promise.all(events.map(async ev => {
+            try {
+                const r = await fetch(`/api/registrations/event/${ev.id}`, { headers: { 'Authorization': 'Basic ' + auth } });
+                if (r.ok) {
+                    const regs = await r.json();
+                    regs.forEach(reg => regData.push({ ...reg, eventCategory: ev.category, eventTitle: ev.title }));
+                }
+            } catch(e) {}
+        }));
+
+        allRegistrations = regData;
+        document.getElementById('statTotalRegs').textContent = regData.length;
+
+        if (!regData.length) {
+            container.innerHTML = '<div class="text-center py-3 text-white-50 small">No registrations recorded yet. Data will populate once students sign up.</div>';
+            return;
+        }
+
+        // Calculations
+        const catCount = {};
+        regData.forEach(r => { const c = r.eventCategory || 'General'; catCount[c] = (catCount[c] || 0) + 1; });
+        const topCategory = Object.entries(catCount).sort((a,b) => b[1] - a[1])[0];
+
+        const evCount = {};
+        regData.forEach(r => { const t = r.eventTitle || 'Unknown'; evCount[t] = (evCount[t] || 0) + 1; });
+        const topEvent = Object.entries(evCount).sort((a,b) => b[1] - a[1])[0];
+
+        const stuCount = {};
+        regData.forEach(r => { const name = r.student?.name || 'Unknown'; stuCount[name] = (stuCount[name] || 0) + 1; });
+        const topStu = Object.entries(stuCount).sort((a,b) => b[1] - a[1])[0];
+
+        const deptCount = {};
+        regData.forEach(r => { const d = r.student?.department || 'Unknown'; deptCount[d] = (deptCount[d] || 0) + 1; });
+        const topDept = Object.entries(deptCount).sort((a,b) => b[1] - a[1])[0];
+
+        const avgReg = (regData.length / events.length).toFixed(1);
+
+        container.innerHTML = `
+            <div class="d-flex align-items-center gap-2 mb-4">
+                <span style="font-size:1.5rem;">📊</span>
+                <div>
+                    <div class="fw-bold fs-5 text-white">Campus Activity Summary</div>
+                    <div style="color:rgba(255,255,255,0.6);font-size:0.85rem;">${regData.length} total event registrations across ${events.length} active events</div>
+                </div>
+            </div>
+            <div class="row g-3">
+                <div class="col-6 col-md-3">
+                    <div class="eng-stat">
+                        <div class="value">🏆 ${escHtml(topCategory?.[0] || '—')}</div>
+                        <div class="label">Top Category<br><span style="color:rgba(255,255,255,0.85);font-size:0.8rem;">${topCategory?.[1]||0} signups</span></div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="eng-stat">
+                        <div class="value">🎯 ${escHtml((topEvent?.[0] || '—').substring(0,18))}${(topEvent?.[0]||'').length>18?'...':''}</div>
+                        <div class="label">Top Event<br><span style="color:rgba(255,255,255,0.85);font-size:0.8rem;">${topEvent?.[1]||0} signups</span></div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="eng-stat">
+                        <div class="value">⭐ ${escHtml(topStu?.[0] || '—')}</div>
+                        <div class="label">Most Active Student<br><span style="color:rgba(255,255,255,0.85);font-size:0.8rem;">${topStu?.[1]||0} events joined</span></div>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3">
+                    <div class="eng-stat">
+                        <div class="value">🏛️ ${escHtml((topDept?.[0] || '—').split(' ')[0])}</div>
+                        <div class="label">Most Active Dept<br><span style="color:rgba(255,255,255,0.85);font-size:0.8rem;">${topDept?.[1]||0} signups (~${avgReg} avg/event)</span></div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Render breakdown bars
+        renderBreakdowns(catCount, deptCount, regData.length);
+    } catch(e) {
+        container.innerHTML = '<div class="text-center py-3 text-danger small">Failed to load engagement metrics.</div>';
+    }
+}
+
+function renderBreakdowns(catCount, deptCount, total) {
+    const catArea = document.getElementById('categoryBreakdownArea');
+    if (catArea) {
+        catArea.innerHTML = Object.entries(catCount).map(([c, count]) => {
+            const pct = Math.round((count / total) * 100);
+            return `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="fw-semibold">${escHtml(c)}</span>
+                        <span class="text-muted">${count} signups (${pct}%)</span>
+                    </div>
+                    <div class="progress" style="height:7px;">
+                        <div class="progress-bar bg-primary" style="width:${pct}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    const deptArea = document.getElementById('departmentBreakdownArea');
+    if (deptArea) {
+        deptArea.innerHTML = Object.entries(deptCount).map(([d, count]) => {
+            const pct = Math.round((count / total) * 100);
+            return `
+                <div class="mb-3">
+                    <div class="d-flex justify-content-between small mb-1">
+                        <span class="fw-semibold">${escHtml(d)}</span>
+                        <span class="text-muted">${count} signups (${pct}%)</span>
+                    </div>
+                    <div class="progress" style="height:7px;">
+                        <div class="progress-bar bg-success" style="width:${pct}%"></div>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+}
+
+// ============================================================
+// CREATE EVENT
+// ============================================================
+document.getElementById('eventForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('createEventBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Publishing...';
+
+    const payload = {
+        title: document.getElementById('title').value.trim(),
+        category: document.getElementById('category').value,
+        department: document.getElementById('department').value.trim() || null,
+        description: document.getElementById('description').value.trim(),
+        organizer: document.getElementById('organizer').value.trim(),
+        eventDate: document.getElementById('eventDate').value,
+        eventTime: document.getElementById('eventTime').value,
+        venue: document.getElementById('venue').value.trim(),
+        capacity: parseInt(document.getElementById('capacity').value),
+        status: document.getElementById('initialStatus').value || 'UPCOMING'
+    };
+
+    try {
+        const r = await fetch('/api/events', {
+            method: 'POST',
+            headers: { 'Authorization': 'Basic ' + auth, 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (r.ok) {
+            showToast('✅ Event published successfully!', 'success');
+            document.getElementById('eventForm').reset();
+            await loadEvents();
+            await loadEngagement();
+        } else {
+            showToast('❌ Failed to publish event.', 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+    finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-plus-circle me-2"></i>Publish Event';
+    }
+});
+
+// ============================================================
+// EDIT / DELETE EVENT
+// ============================================================
+function openEditModal(eventId) {
+    const ev = allEvents.find(e => e.id === eventId);
+    if (!ev) return;
+    document.getElementById('editEventId').value = ev.id;
+    document.getElementById('editTitle').value = ev.title || '';
+    document.getElementById('editCategory').value = ev.category || '';
+    document.getElementById('editStatus').value = ev.status || 'UPCOMING';
+    document.getElementById('editDepartment').value = ev.department || '';
+    document.getElementById('editOrganizer').value = ev.organizer || '';
+    document.getElementById('editDescription').value = ev.description || '';
+    document.getElementById('editEventDate').value = ev.eventDate || '';
+    document.getElementById('editEventTime').value = ev.eventTime || '';
+    document.getElementById('editCapacity').value = ev.capacity || '';
+    document.getElementById('editVenue').value = ev.venue || '';
+    new bootstrap.Modal(document.getElementById('editEventModal')).show();
+}
+
+async function saveEditEvent() {
+    const id = document.getElementById('editEventId').value;
+    const payload = {
+        title: document.getElementById('editTitle').value.trim(),
+        category: document.getElementById('editCategory').value,
+        status: document.getElementById('editStatus').value,
+        department: document.getElementById('editDepartment').value.trim() || null,
+        organizer: document.getElementById('editOrganizer').value.trim(),
+        description: document.getElementById('editDescription').value.trim(),
+        eventDate: document.getElementById('editEventDate').value,
+        eventTime: document.getElementById('editEventTime').value,
+        capacity: parseInt(document.getElementById('editCapacity').value),
+        venue: document.getElementById('editVenue').value.trim()
+    };
+
+    try {
+        const r = await fetch(`/api/events/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': 'Basic ' + auth, 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (r.ok) {
+            bootstrap.Modal.getInstance(document.getElementById('editEventModal')).hide();
+            showToast('✅ Event updated successfully!', 'success');
+            await loadEvents();
+        } else {
+            showToast('❌ Failed to update event.', 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+async function deleteEvent(eventId, eventTitle) {
+    if (!confirm(`Are you sure you want to delete "${eventTitle}"? This cannot be undone.`)) return;
+    try {
+        const r = await fetch(`/api/events/${eventId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+        if (r.ok) {
+            showToast('✅ Event deleted.', 'success');
+            await loadEvents();
+            await loadEngagement();
+            await loadAllFeedback();
+        } else {
+            showToast('❌ Failed to delete event.', 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+// ============================================================
+// VIEW REGISTRATIONS PER EVENT
+// ============================================================
+async function viewRegistrations(eventId, eventTitle) {
+    currentEventTitle = eventTitle;
+    const container = document.getElementById('registrationsModalContent');
+    container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+    document.querySelector('#registrationsModal .modal-title').innerHTML = `<i class="bi bi-people me-2"></i>Registrations — ${escHtml(eventTitle)}`;
+    new bootstrap.Modal(document.getElementById('registrationsModal')).show();
+
+    try {
+        const r = await fetch(`/api/registrations/event/${eventId}`, { headers: { 'Authorization': 'Basic ' + auth } });
+        currentRegData = await r.json();
+        if (!currentRegData.length) {
+            container.innerHTML = '<div class="empty-state"><i class="bi bi-person-x"></i><p>No students have registered for this event yet.</p></div>';
+            return;
+        }
+        const rows = currentRegData.map((reg, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td class="fw-semibold">${escHtml(reg.student?.name || '—')}</td>
+                <td>${escHtml(reg.student?.email || '—')}</td>
+                <td>${escHtml(reg.student?.department || '—')}</td>
+                <td>${reg.student?.year ? reg.student.year + 'th' : '—'}</td>
+                <td>${new Date(reg.registrationDate).toLocaleDateString('en-IN')}</td>
+                <td><span class="badge bg-success-subtle text-success border">${reg.status || 'CONFIRMED'}</span></td>
+                <td>
+                    <button class="btn btn-sm btn-outline-success me-1" onclick="markAttendance(${reg.id}, true)">
+                        <i class="bi bi-check-lg"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger" onclick="markAttendance(${reg.id}, false)">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr><th>#</th><th>Name</th><th>Email</th><th>Dept.</th><th>Year</th><th>Registered On</th><th>Status</th><th>Attendance</th></tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    } catch(e) { container.innerHTML = '<div class="alert alert-danger">Error loading registrations.</div>'; }
+}
+
+function exportRegistrationsCSV() {
+    if (!currentRegData.length) { showToast('No data to export', 'error'); return; }
+    const header = '#,Name,Email,Department,Year,Registered On,Status';
+    const rows = currentRegData.map((r, i) => [
+        i + 1,
+        `"${r.student?.name || ''}"`,
+        r.student?.email || '',
+        `"${r.student?.department || ''}"`,
+        r.student?.year || '',
+        new Date(r.registrationDate).toLocaleDateString('en-IN'),
+        r.status || 'REGISTERED'
+    ].join(','));
+    downloadCSV([header, ...rows].join('\n'), `registrations_${currentEventTitle.replace(/\s+/g,'_')}.csv`);
+    showToast('✅ CSV exported!', 'success');
+}
+
+// ============================================================
+// QUICK VIEW FEEDBACK PER EVENT (Modal)
+// ============================================================
+async function viewFeedback(eventId, eventTitle) {
+    currentEventTitle = eventTitle;
+    const container = document.getElementById('feedbackListContent');
+    container.innerHTML = '<div class="text-center py-4"><div class="spinner-border text-primary"></div></div>';
+    document.querySelector('#feedbackListModal .modal-title').innerHTML = `<i class="bi bi-chat-square-dots me-2"></i>Feedback — ${escHtml(eventTitle)}`;
+    new bootstrap.Modal(document.getElementById('feedbackListModal')).show();
+
+    try {
+        const r = await fetch(`/api/feedback/event/${eventId}`, { headers: { 'Authorization': 'Basic ' + auth } });
+        currentFeedbackData = await r.json();
+        if (!currentFeedbackData.length) {
+            container.innerHTML = '<div class="empty-state"><i class="bi bi-chat-square"></i><p>No feedback received for this event yet.</p></div>';
+            return;
+        }
+        const stars = n => '⭐'.repeat(n || 0);
+        const sentBadge = s => {
+            const m = { POSITIVE: 'bg-success', NEGATIVE: 'bg-danger', NEUTRAL: 'bg-secondary' };
+            return `<span class="badge ${m[s] || 'bg-secondary'}">${s || 'N/A'}</span>`;
+        };
+        const rows = currentFeedbackData.map((f, i) => `
+            <tr>
+                <td>${i + 1}</td>
+                <td class="fw-semibold">${escHtml(f.student?.name || '—')}</td>
+                <td>${stars(f.rating)} <small class="text-muted">(${f.rating}/5)</small></td>
+                <td>${escHtml(f.comment || '—')}</td>
+                <td>${sentBadge(f.sentiment)}</td>
+                <td>${f.sentimentScore ? (f.sentimentScore * 100).toFixed(0) + '%' : '—'}</td>
+                <td>${f.submittedAt ? new Date(f.submittedAt).toLocaleDateString('en-IN') : '—'}</td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                        <tr><th>#</th><th>Student</th><th>Rating</th><th>Comment</th><th>Sentiment</th><th>Confidence</th><th>Date</th></tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>
+        `;
+    } catch(e) { container.innerHTML = '<div class="alert alert-danger">Error loading feedback.</div>'; }
+}
+
+function exportFeedbackCSV() {
+    if (!currentFeedbackData.length) { showToast('No data to export', 'error'); return; }
+    const header = '#,Student,Rating,Comment,Sentiment,Confidence,Date';
+    const rows = currentFeedbackData.map((f, i) => [
+        i + 1,
+        `"${f.student?.name || ''}"`,
+        f.rating || '',
+        `"${(f.comment || '').replace(/"/g, '""')}"`,
+        f.sentiment || 'N/A',
+        f.sentimentScore ? (f.sentimentScore * 100).toFixed(0) + '%' : '—',
+        f.submittedAt ? new Date(f.submittedAt).toLocaleDateString('en-IN') : '—'
+    ].join(','));
+    downloadCSV([header, ...rows].join('\n'), `feedback_${currentEventTitle.replace(/\s+/g,'_')}.csv`);
+    showToast('✅ CSV exported!', 'success');
+}
+
+async function markAttendance(registrationId, attended) {
+    try {
+        const r = await fetch(`/api/attendance/registration/${registrationId}?attended=${attended}`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+        if (r.ok) showToast(attended ? '✅ Marked Present' : '❌ Marked Absent', attended ? 'success' : 'error');
+        else showToast('❌ Failed to update attendance.', 'error');
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+function downloadCSV(content, filename) {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = filename;
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a); URL.revokeObjectURL(url);
+}
+
+function logout() { localStorage.removeItem('auth'); window.location.href = '/login'; }
+function escHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function getCategoryColor(c) {
+    const m = {'Technology':'#667eea','Sports':'#11998e','Cultural':'#f093fb','Competition':'#f5a623','Workshop':'#4facfe','Seminar':'#43e97b','General':'#888'};
+    if (!c) return '#888';
+    for (const [k, v] of Object.entries(m)) if (c.toLowerCase().includes(k.toLowerCase())) return v;
+    return '#667eea';
+}
+
+async function refreshAllData() {
+    showToast('Syncing all admin data...', 'info');
+    await Promise.all([loadEvents(), loadStudents(), loadAllFeedback(), loadEngagement()]);
+    showToast('✅ Synchronized successfully!', 'success');
+}
+
+// ============================================================
+// INITIALIZATION
+// ============================================================
+async function init() {
+    await loadAdminProfile();
+    await Promise.all([loadEvents(), loadStudents(), loadAllFeedback(), loadEngagement()]);
+
+    // Handle direct hash navigation e.g. #students, #feedback
+    const hash = window.location.hash.substring(1);
+    if (hash && ['overview', 'events', 'students', 'feedback', 'insights'].includes(hash)) {
+        switchAdminService(hash);
+    } else {
+        switchAdminService('overview');
+    }
+}
+init();
+</script>
+
+</body>
+</html>

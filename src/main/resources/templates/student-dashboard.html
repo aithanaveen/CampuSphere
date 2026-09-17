@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal — CampuSphere AI</title>
+    <meta name="description" content="Student portal for CampuSphere AI">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <!-- FullCalendar -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.css" rel="stylesheet">
+
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        body { background: #f1f5f9; display: flex; flex-direction: column; min-height: 100vh; margin: 0; }
+        main { flex: 1; }
+
+        /* NAVBAR */
+        .navbar {
+            background: linear-gradient(135deg, #1a1a2e, #16213e) !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+            padding: 12px 0;
+        }
+        .navbar-brand { font-weight: 700; font-size: 1.25rem; color: #fff !important; }
+
+        /* SECONDARY STUDENT NAVIGATION BAR */
+        .student-nav {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        .student-nav .nav-pills .nav-link {
+            color: #475569;
+            font-weight: 600;
+            font-size: 0.88rem;
+            padding: 9px 18px;
+            border-radius: 10px;
+            transition: all 0.2s;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .student-nav .nav-pills .nav-link:hover {
+            background: rgba(102, 126, 234, 0.08);
+            color: #667eea;
+        }
+        .student-nav .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #667eea, #764ba2) !important;
+            color: #fff !important;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.35);
+        }
+
+        /* PAGE ANIMATION */
+        .student-page {
+            animation: fadeIn 0.22s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 20px; padding: 32px; color: #fff;
+            box-shadow: 0 8px 30px rgba(102,126,234,0.32);
+        }
+        .profile-avatar {
+            width: 72px; height: 72px;
+            background: rgba(255,255,255,0.2); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 32px; border: 3px solid rgba(255,255,255,0.3);
+        }
+        .profile-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .profile-detail { color: rgba(255,255,255,0.8); font-size: 0.88rem; }
+        .interest-tag {
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.28);
+            border-radius: 20px; padding: 4px 14px; font-size: 0.8rem; color: #fff;
+            display: inline-block; margin: 3px; font-weight: 500;
+        }
+
+        /* SECTION HEADER */
+        .section-header {
+            font-size: 1.3rem; font-weight: 700; color: #1a1a2e;
+            margin: 24px 0 16px;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .section-header .badge-count {
+            background: #667eea; color: #fff;
+            font-size: 0.75rem; padding: 3px 10px; border-radius: 20px;
+        }
+
+        /* FILTER PILLS */
+        .filter-pill {
+            padding: 6px 16px; border-radius: 20px; font-size: 0.82rem; font-weight: 600;
+            background: #fff; border: 1.5px solid #cbd5e1; color: #475569;
+            cursor: pointer; transition: all 0.2s; text-decoration: none; display: inline-block;
+        }
+        .filter-pill:hover, .filter-pill.active {
+            background: #667eea; border-color: #667eea; color: #fff; box-shadow: 0 4px 12px rgba(102,126,234,0.3);
+        }
+
+        /* CALENDAR */
+        #calendarContainer {
+            background: #fff; border-radius: 18px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            padding: 24px; border: 1px solid #e2e8f0;
+        }
+        .fc-event { cursor: pointer; }
+        .fc-toolbar-title { font-size: 1.15rem !important; font-weight: 700 !important; color: #1a1a2e; }
+        .fc-button-primary {
+            background: #667eea !important; border-color: #667eea !important;
+        }
+        .fc-button-primary:hover {
+            background: #764ba2 !important; border-color: #764ba2 !important;
+        }
+
+        /* AI RECOMMENDATION CARDS */
+        .rec-card {
+            background: #fff; border-radius: 18px;
+            border-left: 5px solid #667eea;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s; height: 100%;
+            border-top: 1px solid #e2e8f0; border-right: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0;
+        }
+        .rec-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(102,126,234,0.2); }
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff; border-radius: 6px; padding: 3px 10px;
+            font-size: 0.75rem; font-weight: 600;
+        }
+        .score-ring {
+            width: 48px; height: 48px; border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(102,126,234,0.35);
+        }
+        .ai-reason {
+            background: #f8fafc; border-left: 3px solid #667eea;
+            border-radius: 0 8px 8px 0; padding: 10px 14px;
+            font-size: 0.83rem; color: #475569; font-style: italic; margin-top: 10px;
+        }
+
+        /* EVENT CARDS */
+        .event-card {
+            background: #fff; border-radius: 18px; border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+            transition: transform 0.2s, box-shadow 0.2s; height: 100%;
+        }
+        .event-card:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .event-card.cancelled { opacity: 0.6; }
+
+        .event-meta {
+            font-size: 0.82rem; color: #64748b;
+            display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+        }
+
+        /* STATUS BADGES */
+        .status-pill {
+            font-size: 0.7rem; padding: 3px 10px; border-radius: 20px;
+            font-weight: 700; letter-spacing: 0.3px;
+        }
+        .status-UPCOMING  { background: #e8f4fd; color: #2196f3; }
+        .status-ONGOING   { background: #e8fdf4; color: #00c853; }
+        .status-COMPLETED { background: #f3e8fd; color: #9c27b0; }
+        .status-CANCELLED { background: #fde8e8; color: #f44336; }
+
+        /* CAPACITY BAR */
+        .capacity-bar { height: 6px; background: #e9ecef; border-radius: 4px; overflow: hidden; margin-top: 8px; }
+        .capacity-fill { height: 100%; border-radius: 4px; transition: width 0.5s; }
+        .cap-ok   .capacity-fill { background: linear-gradient(90deg,#11998e,#38ef7d); }
+        .cap-warn .capacity-fill { background: linear-gradient(90deg,#f5a623,#ffcc02); }
+        .cap-full .capacity-fill { background: linear-gradient(90deg,#ff6b6b,#ee5a24); }
+
+        /* BUTTONS */
+        .btn-register {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            border: none; color: #fff; border-radius: 10px;
+            font-weight: 600; font-size: 0.88rem; padding: 9px 18px;
+            transition: all 0.2s;
+        }
+        .btn-register:hover { transform: translateY(-1px); box-shadow: 0 4px 15px rgba(17,153,142,0.4); color: #fff; }
+        .btn-registered {
+            background: #e8fdf4; border: 1.5px solid #00c853; color: #00c853;
+            border-radius: 10px; font-weight: 600; font-size: 0.85rem; padding: 8px 16px;
+        }
+        .btn-full {
+            background: #fde8e8; border: 1.5px solid #f44336; color: #f44336;
+            border-radius: 10px; font-weight: 600; font-size: 0.85rem; padding: 8px 16px;
+        }
+        .btn-feedback {
+            background: transparent; border: 1.5px solid #667eea; color: #667eea;
+            border-radius: 10px; font-weight: 600; font-size: 0.85rem; padding: 8px 16px;
+            transition: all 0.2s;
+        }
+        .btn-feedback:hover { background: #667eea; color: #fff; }
+        .btn-withdraw {
+            background: transparent; border: 1.5px solid #ef4444; color: #ef4444;
+            border-radius: 8px; font-weight: 600; font-size: 0.78rem; padding: 5px 12px;
+            transition: all 0.2s;
+        }
+        .btn-withdraw:hover { background: #ef4444; color: #fff; }
+        .btn-edit-profile {
+            background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.4);
+            color: #fff; border-radius: 10px; font-size: 0.85rem; font-weight: 600; padding: 8px 18px;
+            transition: all 0.2s;
+        }
+        .btn-edit-profile:hover { background: rgba(255,255,255,0.35); color: #fff; }
+
+        /* REGISTRATIONS TABLE */
+        .reg-table-card { background: #fff; border-radius: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); overflow: hidden; border: 1px solid #e2e8f0; }
+
+        /* MODAL */
+        .modal-content { border-radius: 18px; border: none; box-shadow: 0 20px 60px rgba(0,0,0,0.25); }
+        .modal-header { background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; border-radius: 18px 18px 0 0; border: none; }
+        .modal-header .btn-close { filter: invert(1); }
+
+        /* RATING STARS */
+        .rating-stars { display: flex; gap: 8px; margin-bottom: 8px; }
+        .rating-star { font-size: 1.8rem; cursor: pointer; transition: transform 0.15s; opacity: 0.3; user-select: none; }
+        .rating-star.active { opacity: 1; transform: scale(1.1); }
+        .rating-star:hover { transform: scale(1.2); }
+
+        .toast-container { z-index: 9999; }
+        .empty-state { text-align: center; padding: 50px 20px; color: #94a3b8; }
+        .empty-state i { font-size: 3rem; margin-bottom: 12px; display: block; color: #cbd5e1; }
+
+        /* Profile edit form */
+        .profile-form .form-label { font-weight: 600; font-size: 0.85rem; color: #334155; }
+
+        /* EVENT PASS / TICKET CARD */
+        .ticket-card {
+            background: #ffffff;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.22);
+            border: 1px solid rgba(102,126,234,0.25);
+            position: relative;
+        }
+        .ticket-header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #667eea 100%);
+            color: #fff;
+            padding: 24px 28px;
+            position: relative;
+        }
+        .ticket-header .brand {
+            font-size: 0.76rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #a8b2d1;
+            font-weight: 700;
+        }
+        .ticket-header .title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 4px 0 0 0;
+            letter-spacing: -0.3px;
+        }
+        .ticket-body {
+            padding: 24px 28px;
+            background: #ffffff;
+        }
+        .ticket-divider {
+            position: relative;
+            height: 24px;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            margin: 12px 0;
+        }
+        .ticket-divider::before {
+            content: '';
+            position: absolute;
+            left: -14px;
+            width: 28px;
+            height: 28px;
+            background: #f0f2f5;
+            border-radius: 50%;
+            box-shadow: inset -2px 0 4px rgba(0,0,0,0.06);
+        }
+        .ticket-divider::after {
+            content: '';
+            position: absolute;
+            right: -14px;
+            width: 28px;
+            height: 28px;
+            background: #f0f2f5;
+            border-radius: 50%;
+            box-shadow: inset 2px 0 4px rgba(0,0,0,0.06);
+        }
+        .ticket-divider .dashed-line {
+            width: 100%;
+            border-top: 2px dashed #cbd5e1;
+            margin: 0 16px;
+        }
+        .ticket-info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #8892b0;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+        .ticket-info-value {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #1a1a2e;
+        }
+        .ticket-qr-container {
+            background: #f8fafc;
+            border: 1.5px dashed #cbd5e1;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+        }
+        .ticket-barcode {
+            height: 40px;
+            background-image: repeating-linear-gradient(90deg, #1a1a2e 0px, #1a1a2e 2px, transparent 2px, transparent 4px, #1a1a2e 4px, #1a1a2e 7px, transparent 7px, transparent 9px, #1a1a2e 9px, #1a1a2e 10px, transparent 10px, transparent 13px, #1a1a2e 13px, #1a1a2e 16px, transparent 16px, transparent 18px);
+            opacity: 0.85;
+            margin: 12px 0 4px 0;
+            border-radius: 3px;
+        }
+
+        /* PRINT STYLES */
+        @media print {
+            body * { visibility: hidden !important; }
+            #printableTicketArea, #printableTicketArea * { visibility: visible !important; }
+            #printableTicketArea {
+                position: fixed !important;
+                left: 50% !important;
+                top: 20px !important;
+                transform: translateX(-50%) !important;
+                width: 680px !important;
+                max-width: 100% !important;
+                box-shadow: none !important;
+                border: 2px solid #222 !important;
+                background: #fff !important;
+                color: #000 !important;
+                display: block !important;
+                z-index: 999999 !important;
+            }
+            .no-print { display: none !important; }
+            .ticket-divider::before, .ticket-divider::after { background: #fff !important; }
+        }
+
+        footer { background: linear-gradient(135deg,#1a1a2e,#16213e); border-top: 1px solid rgba(255,255,255,0.06); padding: 28px 0 20px; margin-top: 40px; }
+        .footer-inner { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
+        .footer-brand { color: #fff; font-weight: 700; font-size: 1rem; }
+        .footer-links a { color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.82rem; margin: 0 8px; transition: color 0.2s; }
+        .footer-links a:hover { color: #667eea; }
+        footer .copyright { color: rgba(255,255,255,0.3); font-size: 0.78rem; width: 100%; text-align: center; margin-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 12px; }
+    </style>
+</head>
+<body>
+
+<!-- TOP NAVBAR -->
+<nav class="navbar navbar-dark">
+    <div class="container">
+        <div class="d-flex align-items-center gap-2">
+            <span class="navbar-brand d-flex align-items-center gap-2 mb-0">
+                <span>🎓 CampuSphere AI</span>
+            </span>
+            <span class="text-white-50 small d-none d-md-inline" style="font-size:0.78rem; border-left: 1px solid rgba(255,255,255,0.25); padding-left: 10px;">Event Management System</span>
+            <span class="badge bg-light text-dark fw-semibold" style="font-size:0.72rem; border-radius:8px;">STUDENT PORTAL</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-white-50 small"><i class="bi bi-person-circle me-1"></i><span id="navUserName">Student</span></span>
+            <button class="btn btn-outline-light btn-sm" onclick="logout()"><i class="bi bi-box-arrow-right me-1"></i>Logout</button>
+        </div>
+    </div>
+</nav>
+
+<!-- MODULAR STUDENT NAVIGATION BAR -->
+<nav class="student-nav py-2">
+    <div class="container d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <ul class="nav nav-pills gap-1" id="studentNavPills">
+            <li class="nav-item">
+                <a class="nav-link active" id="tab-student-events" onclick="switchStudentService('events')">
+                    <i class="bi bi-compass"></i>Browse Events
+                    <span class="badge bg-primary ms-1" id="navStudentEventCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-student-calendar" onclick="switchStudentService('calendar')">
+                    <i class="bi bi-calendar3"></i>Calendar View
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-student-recommendations" onclick="switchStudentService('recommendations')">
+                    <i class="bi bi-robot"></i>AI Picks
+                    <span class="badge text-white ms-1" style="background:#764ba2;" id="navStudentRecCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-student-registrations" onclick="switchStudentService('registrations')">
+                    <i class="bi bi-ticket-perforated-fill"></i>My Passes &amp; Registrations
+                    <span class="badge bg-success ms-1" id="navStudentRegCount">0</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="tab-student-profile" onclick="switchStudentService('profile')">
+                    <i class="bi bi-person-circle"></i>My Profile
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<main>
+<div class="container py-4">
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 1: BROWSE EVENTS -->
+    <!-- ============================================================ -->
+    <div id="student-page-events" class="student-page">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">Campus Events</h2>
+                <p class="text-muted mb-0">Discover and register for upcoming university workshops, competitions, and seminars.</p>
+            </div>
+            <div class="d-flex gap-2">
+                <input type="text" id="studentEventSearch" class="form-control" placeholder="Search events..." style="width:240px;" oninput="filterStudentEventCards()">
+            </div>
+        </div>
+
+        <!-- CATEGORY FILTER PILLS -->
+        <div class="d-flex gap-2 mb-4 flex-wrap" id="categoryFilterContainer">
+            <a href="javascript:void(0)" class="filter-pill active" onclick="setCategoryFilter('', this)">All Categories</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Technology', this)">Technology</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Competition', this)">Competition</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Sports', this)">Sports</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Cultural', this)">Cultural</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Workshop', this)">Workshop</a>
+            <a href="javascript:void(0)" class="filter-pill" onclick="setCategoryFilter('Seminar', this)">Seminar</a>
+        </div>
+
+        <!-- EVENT CARDS GRID -->
+        <div id="eventsContainer" class="row g-4">
+            <div class="col-12"><div class="text-center py-5"><div class="spinner-border text-primary"></div></div></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 2: EVENT CALENDAR -->
+    <!-- ============================================================ -->
+    <div id="student-page-calendar" class="student-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">Interactive Event Calendar</h2>
+                <p class="text-muted mb-0">View all scheduled dates, upcoming milestones, and registered sessions.</p>
+            </div>
+        </div>
+
+        <div id="calendarContainer">
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 3: AI RECOMMENDATIONS -->
+    <!-- ============================================================ -->
+    <div id="student-page-recommendations" class="student-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">
+                    🤖 AI Personalized Recommendations
+                </h2>
+                <p class="text-muted mb-0">Curated suggestions tailored to your academic department and selected interests.</p>
+            </div>
+            <button class="btn btn-sm btn-outline-primary" onclick="switchStudentService('profile')">
+                <i class="bi bi-pencil me-1"></i>Update Interests in Profile
+            </button>
+        </div>
+
+        <div id="recommendationsContainer" class="row g-4">
+            <div class="col-12"><div class="text-center py-5"><div class="spinner-border text-primary"></div></div></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 4: MY REGISTRATIONS & EVENT PASSES -->
+    <!-- ============================================================ -->
+    <div id="student-page-registrations" class="student-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">
+                    🎟️ My Passes &amp; Registrations
+                </h2>
+                <p class="text-muted mb-0">Manage your event enrollments, generate your digital entry tickets, and provide post-event feedback.</p>
+            </div>
+            <span class="badge bg-success bg-opacity-10 text-success fs-6 px-3 py-2 fw-semibold" id="studentRegsBadge">
+                0 Registered
+            </span>
+        </div>
+
+        <div class="reg-table-card" id="registrationsContainer">
+            <div class="text-center py-5"><div class="spinner-border text-primary"></div></div>
+        </div>
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- SERVICE 5: MY PROFILE -->
+    <!-- ============================================================ -->
+    <div id="student-page-profile" class="student-page" style="display:none;">
+        <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+            <div>
+                <h2 class="fw-bold mb-1" style="font-size:1.7rem; color:#1a1a2e;">My Student Profile</h2>
+                <p class="text-muted mb-0">Review your academic credentials, personalize your interests, and track your campus activity.</p>
+            </div>
+            <button class="btn btn-primary-grad" onclick="openProfileEdit()">
+                <i class="bi bi-pencil-square me-1"></i>Edit Profile
+            </button>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-7">
+                <div class="profile-card">
+                    <div class="d-flex align-items-start justify-content-between flex-wrap gap-3">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="profile-avatar">🎓</div>
+                            <div>
+                                <div class="profile-name" id="profileName">Loading...</div>
+                                <div class="profile-detail">
+                                    <i class="bi bi-mortarboard me-1"></i><span id="profileDept">—</span>
+                                    &nbsp;|&nbsp;<i class="bi bi-calendar3 me-1"></i>Year <span id="profileYear">—</span>
+                                </div>
+                                <div class="profile-detail mt-1">
+                                    <i class="bi bi-envelope me-1"></i><span id="profileEmail">—</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr style="border-color:rgba(255,255,255,0.2);" class="my-4">
+
+                    <div>
+                        <div style="font-size:0.8rem; text-transform:uppercase; letter-spacing:1px; color:rgba(255,255,255,0.7); margin-bottom:10px; font-weight:700;">
+                            <i class="bi bi-tags me-1"></i>Personalized Interests (AI Recommendations Factor)
+                        </div>
+                        <div id="interestTags">
+                            <span class="interest-tag">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="card p-4 rounded-4 border shadow-sm h-100 bg-white">
+                    <h5 class="fw-bold mb-3 text-dark"><i class="bi bi-activity me-2 text-primary"></i>My Campus Activity</h5>
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-light mb-3">
+                        <div>
+                            <div class="text-muted small">Registered Events</div>
+                            <div class="fs-4 fw-bold text-dark" id="profileStatRegs">0</div>
+                        </div>
+                        <div class="fs-2 text-primary">🎟️</div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center p-3 rounded-3 bg-light mb-4">
+                        <div>
+                            <div class="text-muted small">AI Picks Matched</div>
+                            <div class="fs-4 fw-bold text-dark" id="profileStatRecs">0</div>
+                        </div>
+                        <div class="fs-2 text-purple">🤖</div>
+                    </div>
+                    <button class="btn btn-outline-primary w-100" onclick="switchStudentService('registrations')">
+                        <i class="bi bi-ticket-perforated me-1"></i>View My Digital Passes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+</main>
+
+
+<!-- CALENDAR EVENT MODAL -->
+<div class="modal fade" id="calEventModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="calEventTitle">Event Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4" id="calEventBody"></div>
+            <div class="modal-footer border-0" id="calEventFooter"></div>
+        </div>
+    </div>
+</div>
+
+<!-- PROFILE EDIT MODAL -->
+<div class="modal fade" id="profileEditModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-person-gear me-2"></i>Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4 profile-form">
+                <input type="hidden" id="editStudentId">
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" id="editName" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email Address (Account ID)</label>
+                    <input type="email" id="editEmail" class="form-control" disabled>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-8">
+                        <label class="form-label">Department</label>
+                        <select id="editDept" class="form-select">
+                            <option>Computer Science</option>
+                            <option>Information Technology</option>
+                            <option>Electronics &amp; Communication</option>
+                            <option>Electrical Engineering</option>
+                            <option>Mechanical Engineering</option>
+                            <option>Civil Engineering</option>
+                            <option>Business Administration</option>
+                            <option>Mathematics</option>
+                            <option>Physics</option>
+                            <option>Chemistry</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-label">Year</label>
+                        <select id="editYear" class="form-select">
+                            <option value="1">1st Year</option>
+                            <option value="2">2nd Year</option>
+                            <option value="3">3rd Year</option>
+                            <option value="4">4th Year</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Interests <small class="text-muted">(comma-separated for AI suggestions)</small></label>
+                    <input type="text" id="editInterests" class="form-control" placeholder="e.g. AI, Full stack, Cloud, Robotics">
+                </div>
+                <div id="profileEditAlert" class="alert d-none"></div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" onclick="saveProfile()">
+                    <i class="bi bi-check-lg me-1"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- EVENT PASS / TICKET MODAL -->
+<div class="modal fade" id="eventPassModal" tabindex="-1" aria-labelledby="eventPassModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 bg-transparent shadow-none">
+            
+            <!-- PRINTABLE PASS CARD -->
+            <div class="ticket-card" id="printableTicketArea">
+                <!-- Header -->
+                <div class="ticket-header d-flex justify-content-between align-items-start flex-wrap gap-2">
+                    <div>
+                        <div class="brand"><i class="bi bi-shield-check me-1"></i> CampuSphere AI · Event Management System · Official Pass</div>
+                        <h4 class="title" id="passEventTitle">Campus Event</h4>
+                        <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
+                            <span class="badge bg-white text-dark fw-bold px-3 py-1" id="passEventCategory">General</span>
+                            <span class="badge bg-success text-white px-3 py-1 fw-semibold"><i class="bi bi-check-circle-fill me-1"></i>CONFIRMED TICKET</span>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="ticket-info-label text-light opacity-75">Pass Serial</div>
+                        <div class="fw-bold fs-5 text-warning font-monospace" id="passSerialNo">PASS-00001</div>
+                        <button type="button" class="btn-close btn-close-white no-print mt-2" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                </div>
+
+                <!-- Event Details Row -->
+                <div class="ticket-body">
+                    <div class="row g-3 mb-3">
+                        <div class="col-6 col-md-3">
+                            <div class="ticket-info-label"><i class="bi bi-calendar3 me-1"></i>Date</div>
+                            <div class="ticket-info-value" id="passEventDate">—</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="ticket-info-label"><i class="bi bi-clock me-1"></i>Time</div>
+                            <div class="ticket-info-value" id="passEventTime">—</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="ticket-info-label"><i class="bi bi-geo-alt me-1"></i>Venue</div>
+                            <div class="ticket-info-value" id="passEventVenue">—</div>
+                        </div>
+                        <div class="col-6 col-md-3">
+                            <div class="ticket-info-label"><i class="bi bi-person-badge me-1"></i>Organizer</div>
+                            <div class="ticket-info-value" id="passEventOrganizer">—</div>
+                        </div>
+                    </div>
+
+                    <!-- Perforated Tear Notch -->
+                    <div class="ticket-divider">
+                        <div class="dashed-line"></div>
+                    </div>
+
+                    <!-- Attendee & Verification Row -->
+                    <div class="row g-3 align-items-center mt-1">
+                        <div class="col-md-7">
+                            <h6 class="fw-bold text-muted text-uppercase mb-3" style="font-size:0.75rem; letter-spacing:1px;">
+                                <i class="bi bi-person-circle me-1"></i>Registered Attendee
+                            </h6>
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <div class="ticket-info-label">Student Name</div>
+                                    <div class="fs-5 fw-bold text-dark" id="passStudentName">—</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="ticket-info-label">Email Address</div>
+                                    <div class="ticket-info-value text-muted" id="passStudentEmail" style="font-size:0.85rem; word-break:break-all;">—</div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="ticket-info-label">Department / Year</div>
+                                    <div class="ticket-info-value" id="passStudentDeptYear">—</div>
+                                </div>
+                                <div class="col-12 mt-2">
+                                    <div class="ticket-info-label">Issuance Timestamp</div>
+                                    <div class="text-muted small" id="passRegDate">Issued on ...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5 text-center">
+                            <div class="ticket-qr-container">
+                                <img id="passQrCodeImg" src="" alt="Verification QR Code" width="130" height="130" class="img-fluid rounded border bg-white p-1" crossorigin="anonymous">
+                                <div class="small fw-semibold text-muted mt-2"><i class="bi bi-qr-code-scan me-1"></i>Scan for Entry Verification</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Barcode Strip -->
+                    <div class="mt-4 pt-2 border-top">
+                        <div class="ticket-barcode"></div>
+                        <div class="d-flex justify-content-between align-items-center mt-1 flex-wrap gap-1">
+                            <span class="font-monospace text-muted small" id="passBarcodeCode">*PASS-0000-SCEMS*</span>
+                            <span class="text-muted" style="font-size:0.72rem;"><i class="bi bi-shield-check text-success me-1"></i>Verified Campus Pass · Non-Transferable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Action Footer -->
+            <div class="modal-footer border-0 justify-content-center gap-2 mt-3 no-print">
+                <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i>Close
+                </button>
+                <button type="button" class="btn btn-outline-light px-4" style="background:#4facfe; border-color:#4facfe; color:#fff;" onclick="downloadPassPng()">
+                    <i class="bi bi-download me-1"></i>Download Pass (PNG)
+                </button>
+                <button type="button" class="btn btn-primary px-4" onclick="printPass()">
+                    <i class="bi bi-printer me-1"></i>Print / Save PDF
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="modal fade" id="feedbackModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-chat-square-quote me-2"></i>Submit Event Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <input type="hidden" id="feedbackEventId">
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Your Rating</label>
+                    <div class="rating-stars" id="ratingStars">
+                        <span class="rating-star" data-value="1">⭐</span>
+                        <span class="rating-star" data-value="2">⭐</span>
+                        <span class="rating-star" data-value="3">⭐</span>
+                        <span class="rating-star" data-value="4">⭐</span>
+                        <span class="rating-star" data-value="5">⭐</span>
+                    </div>
+                    <input type="hidden" id="selectedRating" value="5">
+                    <div id="ratingLabel" class="small text-muted">5 stars — Excellent</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">Your Comments / Experience</label>
+                    <textarea id="feedbackComment" class="form-control" rows="4" placeholder="What did you learn? What can be improved for next time?"></textarea>
+                </div>
+                <div id="feedbackAlert" class="alert d-none"></div>
+            </div>
+            <div class="modal-footer border-0">
+                <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                <button class="btn btn-primary" id="submitFeedbackBtn" onclick="submitFeedback()">
+                    <i class="bi bi-send me-1"></i> Submit Feedback
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="toastMsg" class="toast align-items-center border-0" role="alert">
+        <div class="d-flex">
+            <div class="toast-body" id="toastText"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+        </div>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <div class="footer-brand">🎓 CampuSphere AI · Event Management System</div>
+            <div class="footer-links">
+                <a href="#" onclick="switchStudentService('events')">Browse Events</a>
+                <a href="#" onclick="switchStudentService('calendar')">Calendar</a>
+                <a href="#" onclick="switchStudentService('recommendations')">AI Picks</a>
+                <a href="#" onclick="switchStudentService('registrations')">My Passes</a>
+                <a href="#" onclick="switchStudentService('profile')">My Profile</a>
+                <a href="/login" onclick="logout()">Logout</a>
+            </div>
+        </div>
+        <div class="copyright">© 2026 CampuSphere AI — Smart Campus Event Management System &nbsp;·&nbsp; Powered by 🤖 AI</div>
+    </div>
+</footer>
+
+<!-- FullCalendar JS -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const auth = localStorage.getItem('auth');
+if (!auth) window.location.href = '/login';
+
+let currentUser = null;
+let allEvents = [];
+let myRegistrations = [];
+let registeredEventIds = new Set();
+let calendar = null;
+let currentPassRegistration = null;
+let activeCategoryFilter = '';
+
+// ============================================================
+// MODULAR SERVICE SWITCHING
+// ============================================================
+function switchStudentService(serviceName) {
+    const validServices = ['events', 'calendar', 'recommendations', 'registrations', 'profile'];
+    if (!validServices.includes(serviceName)) serviceName = 'events';
+
+    // Hide all service views
+    document.querySelectorAll('.student-page').forEach(el => el.style.display = 'none');
+    // Deactivate all nav pills
+    document.querySelectorAll('#studentNavPills .nav-link').forEach(el => el.classList.remove('active'));
+
+    // Show selected view
+    const targetPage = document.getElementById(`student-page-${serviceName}`);
+    if (targetPage) targetPage.style.display = 'block';
+
+    // Activate corresponding nav pill
+    const targetPill = document.getElementById(`tab-student-${serviceName}`);
+    if (targetPill) targetPill.classList.add('active');
+
+    // Update URL hash
+    if (window.location.hash.substring(1) !== serviceName) {
+        history.pushState(null, null, `#${serviceName}`);
+    }
+
+    // Special trigger for calendar rendering
+    if (serviceName === 'calendar') {
+        setTimeout(initCalendar, 50);
+    }
+
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.addEventListener('hashchange', function() {
+    const hash = window.location.hash.substring(1);
+    if (hash) switchStudentService(hash);
+});
+
+function showToast(msg, type='info') {
+    const toast = document.getElementById('toastMsg');
+    const toastText = document.getElementById('toastText');
+    toastText.textContent = msg;
+    toast.className = `toast align-items-center border-0 text-white ${type==='error'?'bg-danger':type==='success'?'bg-success':'bg-primary'}`;
+    new bootstrap.Toast(toast, {delay: 3200}).show();
+}
+
+// ============================================================
+// RATING STARS HANDLER
+// ============================================================
+document.querySelectorAll('.rating-star').forEach(star => {
+    star.addEventListener('click', function() {
+        const val = parseInt(this.dataset.value);
+        document.getElementById('selectedRating').value = val;
+        const labels = ['1 star — Poor', '2 stars — Fair', '3 stars — Good', '4 stars — Very Good', '5 stars — Excellent'];
+        document.getElementById('ratingLabel').textContent = labels[val - 1];
+        document.querySelectorAll('.rating-star').forEach((s, idx) => {
+            s.classList.toggle('active', idx < val);
+            s.style.opacity = idx < val ? '1' : '0.3';
+        });
+    });
+    star.addEventListener('mouseenter', function() {
+        const v = parseInt(this.dataset.value);
+        document.querySelectorAll('.rating-star').forEach((s, i) => s.style.opacity = i < v ? '1' : '0.3');
+    });
+});
+document.getElementById('ratingStars').addEventListener('mouseleave', function() {
+    const v = parseInt(document.getElementById('selectedRating').value);
+    document.querySelectorAll('.rating-star').forEach((s, i) => s.style.opacity = i < v ? '1' : '0.3');
+});
+document.querySelectorAll('.rating-star').forEach(s => s.classList.add('active'));
+
+// ============================================================
+// PROFILE
+// ============================================================
+async function loadProfile() {
+    try {
+        const r = await fetch('/api/auth/me', { headers: { 'Authorization': 'Basic ' + auth } });
+        if (!r.ok) {
+            if (r.status === 401) { localStorage.removeItem('auth'); window.location.href = '/login'; }
+            return;
+        }
+        currentUser = await r.json();
+        if (currentUser.role === 'ADMIN') { window.location.href = '/admin'; return; }
+
+        document.getElementById('navUserName').textContent = currentUser.name || currentUser.email;
+        document.getElementById('profileName').textContent  = currentUser.name || '—';
+        document.getElementById('profileEmail').textContent = currentUser.email || '—';
+        document.getElementById('profileDept').textContent  = currentUser.department || '—';
+        document.getElementById('profileYear').textContent  = currentUser.year || '—';
+
+        const tags = document.getElementById('interestTags');
+        tags.innerHTML = '';
+        if (currentUser.interests) {
+            currentUser.interests.split(',').forEach(i => {
+                const s = document.createElement('span');
+                s.className = 'interest-tag'; s.textContent = i.trim(); tags.appendChild(s);
+            });
+        } else {
+            tags.innerHTML = '<span class="interest-tag">No interests set. Click Edit Profile to add some!</span>';
+        }
+    } catch(e) { console.error(e); }
+}
+
+function openProfileEdit() {
+    if (!currentUser) return;
+    document.getElementById('editStudentId').value  = currentUser.id || '';
+    document.getElementById('editName').value       = currentUser.name || '';
+    document.getElementById('editEmail').value      = currentUser.email || '';
+    document.getElementById('editEmail').disabled   = true;
+    document.getElementById('editDept').value       = currentUser.department || '';
+    document.getElementById('editYear').value       = currentUser.year || '1';
+    document.getElementById('editInterests').value  = currentUser.interests || '';
+    document.getElementById('profileEditAlert').className = 'alert d-none';
+    new bootstrap.Modal(document.getElementById('profileEditModal')).show();
+}
+
+async function saveProfile() {
+    const name     = document.getElementById('editName').value.trim();
+    const dept     = document.getElementById('editDept').value;
+    const year     = parseInt(document.getElementById('editYear').value);
+    const interests= document.getElementById('editInterests').value.trim();
+    const alertDiv = document.getElementById('profileEditAlert');
+
+    if (!name) {
+        alertDiv.className = 'alert alert-warning'; alertDiv.textContent = 'Full Name is required.'; return;
+    }
+
+    try {
+        const r = await fetch('/api/students/profile', {
+            method: 'PUT',
+            headers: { 'Authorization': 'Basic ' + auth, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, department: dept, year, interests: interests || null })
+        });
+
+        if (r.ok) {
+            bootstrap.Modal.getInstance(document.getElementById('profileEditModal')).hide();
+            showToast('✅ Profile updated successfully!', 'success');
+            await loadProfile();
+            await loadRecommendations();
+        } else {
+            const d = await r.json().catch(() => null);
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.textContent = d?.message || 'Failed to update profile. Please try again.';
+        }
+    } catch(e) {
+        alertDiv.className = 'alert alert-danger'; alertDiv.textContent = 'Error connecting to server.';
+    }
+}
+
+// ============================================================
+// EVENTS
+// ============================================================
+async function loadEvents() {
+    try {
+        const r = await fetch('/api/events');
+        if (!r.ok) {
+            document.getElementById('eventsContainer').innerHTML = '<div class="col-12"><div class="alert alert-danger">Failed to load events.</div></div>';
+            return;
+        }
+
+        allEvents = await r.json();
+        document.getElementById('navStudentEventCount').textContent = allEvents.length;
+
+        // Fetch registration count for each event
+        await Promise.all(allEvents.map(async ev => {
+            try {
+                const cr = await fetch(`/api/events/${ev.id}/registration-count`);
+                if (cr.ok) ev._regCount = await cr.json();
+            } catch(e) { ev._regCount = 0; }
+            ev._isFull = ev.capacity && ev._regCount >= ev.capacity;
+        }));
+
+        renderEventCards(allEvents);
+        if (calendar) { calendar.removeAllEvents(); calendar.addEventSource(buildCalendarEvents()); }
+    } catch(e) { console.error(e); }
+}
+
+function renderEventCards(eventsList) {
+    const container = document.getElementById('eventsContainer');
+    if (!eventsList.length) {
+        container.innerHTML = '<div class="col-12"><div class="empty-state"><i class="bi bi-calendar-x"></i><p>No events found for this selection.</p></div></div>';
+        return;
+    }
+    container.innerHTML = '';
+    eventsList.forEach(ev => {
+        const isReg = registeredEventIds.has(ev.id);
+        const color  = getCategoryColor(ev.category);
+        const status = ev.status || 'UPCOMING';
+        const isCancelled = status === 'CANCELLED';
+        const isFull = ev._isFull;
+        const capPct = ev.capacity ? Math.min(Math.round((ev._regCount||0)/ev.capacity*100), 100) : 0;
+        const capClass = capPct >= 100 ? 'cap-full' : capPct >= 75 ? 'cap-warn' : 'cap-ok';
+
+        let actionBtn;
+        if (isCancelled) {
+            actionBtn = `<button class="btn btn-full flex-fill" disabled>Event Cancelled</button>`;
+        } else if (isReg) {
+            actionBtn = `<button class="btn btn-registered flex-fill" disabled><i class="bi bi-check-lg me-1"></i>Registered</button>`;
+        } else if (isFull) {
+            actionBtn = `<button class="btn btn-full flex-fill" disabled><i class="bi bi-x-circle me-1"></i>Event Full</button>`;
+        } else {
+            actionBtn = `<button class="btn btn-register flex-fill" onclick="registerEvent(${ev.id})"><i class="bi bi-plus-circle me-1"></i>Register</button>`;
+        }
+
+        container.innerHTML += `
+        <div class="col-md-6 col-lg-4">
+            <div class="event-card card ${isCancelled ? 'cancelled' : ''}">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                        <span class="badge" style="background:${color}15;color:${color};border:1px solid ${color}30;font-size:0.73rem;padding:4px 12px;border-radius:20px;font-weight:600;">
+                            ${escHtml(ev.category || 'General')}
+                        </span>
+                        <div class="d-flex gap-1 align-items-center flex-wrap">
+                            <span class="status-pill status-${status}">${status}</span>
+                            ${isReg ? '<span class="badge bg-success-subtle text-success"><i class="bi bi-check-circle me-1"></i>Registered</span>' : ''}
+                        </div>
+                    </div>
+                    <h5 class="card-title fw-bold mt-2 mb-3" style="${isCancelled ? 'text-decoration:line-through;' : ''}">${escHtml(ev.title)}</h5>
+                    <p class="text-muted small mb-3" style="line-height:1.6;">${escHtml((ev.description||'').substring(0,110))}${(ev.description||'').length>110?'...':''}</p>
+                    <div class="event-meta"><i class="bi bi-calendar3"></i>${ev.eventDate || 'TBD'}</div>
+                    <div class="event-meta"><i class="bi bi-clock"></i>${ev.eventTime || 'TBD'}</div>
+                    <div class="event-meta"><i class="bi bi-geo-alt"></i>${escHtml(ev.venue || 'TBD')}</div>
+                    ${ev.capacity ? `
+                    <div class="mt-2">
+                        <div class="d-flex justify-content-between small">
+                            <span class="text-muted">Capacity</span>
+                            <span class="${capPct>=100?'text-danger fw-semibold':'text-muted'}">${ev._regCount||0}/${ev.capacity} ${isFull?'(Full)':''}</span>
+                        </div>
+                        <div class="capacity-bar ${capClass}"><div class="capacity-fill" style="width:${capPct}%"></div></div>
+                    </div>` : ''}
+                    <div class="d-flex gap-2 mt-4">
+                        ${actionBtn}
+                        <button class="btn btn-feedback" onclick="openFeedback(${ev.id},'${escHtml(ev.title).replace(/'/g,"\\'")}')" title="Feedback">
+                            <i class="bi bi-chat-dots"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    });
+}
+
+function setCategoryFilter(cat, element) {
+    activeCategoryFilter = cat;
+    document.querySelectorAll('#categoryFilterContainer .filter-pill').forEach(p => p.classList.remove('active'));
+    if (element) element.classList.add('active');
+    filterStudentEventCards();
+}
+
+function filterStudentEventCards() {
+    const q = (document.getElementById('studentEventSearch').value || '').toLowerCase().trim();
+    const filtered = allEvents.filter(ev => {
+        const matchesCat = !activeCategoryFilter || ev.category === activeCategoryFilter;
+        const matchesQ = !q || (ev.title && ev.title.toLowerCase().includes(q)) || (ev.description && ev.description.toLowerCase().includes(q));
+        return matchesCat && matchesQ;
+    });
+    renderEventCards(filtered);
+}
+
+// ============================================================
+// CALENDAR VIEW
+// ============================================================
+function initCalendar() {
+    if (calendar) { calendar.refetchEvents(); return; }
+
+    const calEl = document.getElementById('calendar');
+    if (!calEl) return;
+
+    calendar = new FullCalendar.Calendar(calEl, {
+        initialView: 'dayGridMonth',
+        height: 'auto',
+        headerToolbar: { left: 'prev,next today', center: 'title', right: 'dayGridMonth,listWeek' },
+        events: buildCalendarEvents(),
+        eventClick: function(info) {
+            const ev = info.event.extendedProps.data;
+            showCalEventModal(ev);
+        },
+        eventDidMount: function(info) {
+            const status = info.event.extendedProps.data.status || 'UPCOMING';
+            if (status === 'CANCELLED') {
+                info.el.style.opacity = '0.5';
+                info.el.style.textDecoration = 'line-through';
+            }
+        }
+    });
+    calendar.render();
+}
+
+function buildCalendarEvents() {
+    return allEvents.map(ev => {
+        const isReg = registeredEventIds.has(ev.id);
+        const color = isReg ? '#11998e' : getCategoryColor(ev.category);
+        return {
+            id: ev.id,
+            title: (isReg ? '✅ ' : '') + ev.title,
+            start: ev.eventDate || null,
+            backgroundColor: color,
+            borderColor: color,
+            textColor: '#fff',
+            extendedProps: { data: ev }
+        };
+    }).filter(e => e.start);
+}
+
+function showCalEventModal(ev) {
+    const isReg = registeredEventIds.has(ev.id);
+    const isCancelled = ev.status === 'CANCELLED';
+    const isFull = ev._isFull;
+
+    document.getElementById('calEventTitle').textContent = ev.title;
+    document.getElementById('calEventBody').innerHTML = `
+        <div class="d-flex gap-2 flex-wrap mb-3">
+            <span class="status-pill status-${ev.status || 'UPCOMING'}">${ev.status || 'UPCOMING'}</span>
+            ${isReg ? '<span class="badge bg-success">✅ Registered</span>' : ''}
+        </div>
+        <p style="color:#555; line-height:1.7;">${escHtml(ev.description || '')}</p>
+        <div class="text-muted small">
+            <div><i class="bi bi-calendar3 me-2"></i>${ev.eventDate || 'TBD'} at ${ev.eventTime || 'TBD'}</div>
+            <div><i class="bi bi-geo-alt me-2"></i>${escHtml(ev.venue || 'TBD')}</div>
+            <div><i class="bi bi-person-workspace me-2"></i>${escHtml(ev.organizer || '—')}</div>
+            <div><i class="bi bi-people me-2"></i>Capacity: ${ev.capacity || 'Open'}</div>
+        </div>
+    `;
+    const footer = document.getElementById('calEventFooter');
+    if (isReg) {
+        footer.innerHTML = `<button class="btn btn-registered w-100" disabled><i class="bi bi-check-lg me-1"></i>Already Registered</button>`;
+    } else if (isCancelled) {
+        footer.innerHTML = `<button class="btn btn-full w-100" disabled>Event Cancelled</button>`;
+    } else if (isFull) {
+        footer.innerHTML = `<button class="btn btn-full w-100" disabled>Event Full</button>`;
+    } else {
+        footer.innerHTML = `<button class="btn btn-register w-100" onclick="registerEvent(${ev.id}); bootstrap.Modal.getInstance(document.getElementById('calEventModal')).hide();">
+            <i class="bi bi-plus-circle me-1"></i>Register Now
+        </button>`;
+    }
+    new bootstrap.Modal(document.getElementById('calEventModal')).show();
+}
+
+// ============================================================
+// MY REGISTRATIONS & DIGITAL PASSES
+// ============================================================
+async function loadMyRegistrations() {
+    try {
+        const r = await fetch('/api/registrations/my', { headers: { 'Authorization': 'Basic ' + auth } });
+        if (!r.ok) {
+            document.getElementById('registrationsContainer').innerHTML = '<div class="p-4 text-danger">Failed to load registrations.</div>';
+            return;
+        }
+
+        myRegistrations = await r.json();
+        document.getElementById('navStudentRegCount').textContent = myRegistrations.length;
+        document.getElementById('studentRegsBadge').textContent = `${myRegistrations.length} Registered`;
+        if (document.getElementById('profileStatRegs')) {
+            document.getElementById('profileStatRegs').textContent = myRegistrations.length;
+        }
+
+        registeredEventIds.clear();
+        myRegistrations.forEach(r => registeredEventIds.add(r.event.id));
+
+        const container = document.getElementById('registrationsContainer');
+        if (!myRegistrations.length) {
+            container.innerHTML = `<div class="empty-state"><i class="bi bi-ticket-perforated"></i><p>You haven't registered for any events yet.</p></div>`;
+            return;
+        }
+
+        const rows = myRegistrations.map(r => `
+            <tr>
+                <td class="fw-semibold">${escHtml(r.event.title)}</td>
+                <td><span class="badge bg-light text-dark border">${escHtml(r.event.category || 'General')}</span></td>
+                <td>${r.event.eventDate || '—'}</td>
+                <td>${escHtml(r.event.venue || '—')}</td>
+                <td>${new Date(r.registrationDate).toLocaleDateString('en-IN')}</td>
+                <td><span class="status-pill status-${r.event.status || 'UPCOMING'}">${r.event.status || 'UPCOMING'}</span></td>
+                <td>
+                    <div class="d-flex gap-1 flex-wrap">
+                        <button class="btn btn-sm btn-primary" onclick="viewPassById(${r.id})">
+                            <i class="bi bi-ticket-perforated me-1"></i>Pass
+                        </button>
+                        <button class="btn btn-sm btn-feedback" onclick="openFeedback(${r.event.id},'${escHtml(r.event.title).replace(/'/g,"\\'")}')">
+                            <i class="bi bi-chat-dots me-1"></i>Feedback
+                        </button>
+                        <button class="btn btn-withdraw btn-sm" onclick="withdrawRegistration(${r.id},'${escHtml(r.event.title).replace(/'/g,"\\'")}')">
+                            <i class="bi bi-x-circle me-1"></i>Withdraw
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        container.innerHTML = `
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Event</th><th>Category</th><th>Date</th>
+                            <th>Venue</th><th>Registered On</th><th>Status</th><th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>${rows}</tbody>
+                </table>
+            </div>`;
+    } catch(e) { console.error(e); }
+}
+
+// ============================================================
+// AI RECOMMENDATIONS
+// ============================================================
+async function loadRecommendations() {
+    try {
+        const r = await fetch('/api/recommendations', { headers: { 'Authorization': 'Basic ' + auth } });
+        const container = document.getElementById('recommendationsContainer');
+        if (!r.ok) {
+            container.innerHTML = '<div class="col-12"><div class="alert alert-warning">Unable to load recommendations.</div></div>';
+            return;
+        }
+
+        const recs = await r.json();
+        document.getElementById('navStudentRecCount').textContent = recs.length;
+        if (document.getElementById('profileStatRecs')) {
+            document.getElementById('profileStatRecs').textContent = recs.length;
+        }
+
+        if (!recs.length) {
+            container.innerHTML = '<div class="col-12"><div class="empty-state"><i class="bi bi-robot"></i><p>No new recommendations at this time. Update your interests in your profile to discover more events!</p></div></div>';
+            return;
+        }
+
+        container.innerHTML = '';
+        recs.slice(0, 6).forEach(item => {
+            const ev = item.event;
+            const score = Math.round(item.score);
+            const color = getCategoryColor(ev.category);
+            container.innerHTML += `
+            <div class="col-md-6 col-xl-4">
+                <div class="rec-card card p-4">
+                    <div class="d-flex align-items-start justify-content-between mb-3">
+                        <div class="flex-grow-1">
+                            <span class="ai-badge mb-2 d-inline-block">🤖 AI Pick</span>
+                            <h6 class="fw-bold mb-1">${escHtml(ev.title)}</h6>
+                            <span class="badge" style="background:${color}15;color:${color};border:1px solid ${color}30;font-size:0.72rem;">${ev.category || 'General'}</span>
+                        </div>
+                        <div class="score-ring ms-3" title="Relevance score">${score}</div>
+                    </div>
+                    <div class="event-meta"><i class="bi bi-calendar3"></i>${ev.eventDate || 'TBD'}</div>
+                    <div class="event-meta"><i class="bi bi-geo-alt"></i>${escHtml(ev.venue || 'TBD')}</div>
+                    <div class="ai-reason"><i class="bi bi-lightbulb me-1"></i>${escHtml(item.reason)}</div>
+                    <button class="btn btn-register w-100 mt-3" onclick="registerEvent(${ev.id})">
+                        <i class="bi bi-plus-circle me-1"></i>Register Now
+                    </button>
+                </div>
+            </div>`;
+        });
+    } catch(e) {
+        console.error(e);
+        document.getElementById('recommendationsContainer').innerHTML = '<div class="col-12"><div class="alert alert-warning">Recommendations temporarily unavailable.</div></div>';
+    }
+}
+
+// ============================================================
+// REGISTER / WITHDRAW / DIGITAL PASS
+// ============================================================
+async function registerEvent(eventId) {
+    try {
+        const r = await fetch(`/api/registrations/event/${eventId}`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+        if (r.ok) {
+            const regData = await r.json();
+            showToast('🎉 Registered successfully! Your entry pass is ready.', 'success');
+            await loadMyRegistrations();
+            await loadEvents();
+            await loadRecommendations();
+
+            let fullReg = myRegistrations.find(item => item.id === regData.id) || regData;
+            if (!fullReg.student && currentUser) fullReg.student = currentUser;
+            showEventPass(fullReg);
+        } else {
+            const d = await r.json().catch(() => null);
+            showToast('❌ ' + (d?.message || 'Registration failed.'), 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+async function withdrawRegistration(regId, title) {
+    if (!confirm(`Withdraw from "${title}"?\n\nThis will cancel your registration.`)) return;
+    try {
+        const r = await fetch(`/api/registrations/${regId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+        if (r.ok) {
+            showToast('✅ Withdrawn from event.', 'success');
+            await loadMyRegistrations();
+            await loadEvents();
+            await loadRecommendations();
+        } else {
+            const d = await r.json().catch(() => null);
+            showToast('❌ ' + (d?.message || 'Withdrawal failed.'), 'error');
+        }
+    } catch(e) { showToast('❌ Error connecting to server.', 'error'); }
+}
+
+function showEventPass(reg) {
+    if (!reg) return;
+    currentPassRegistration = reg;
+    const ev = reg.event || {};
+    const st = reg.student || currentUser || {};
+
+    document.getElementById('passEventTitle').textContent = ev.title || 'Campus Event';
+    document.getElementById('passEventCategory').textContent = ev.category || 'General';
+    document.getElementById('passSerialNo').textContent = 'PASS-' + String(reg.id || '00001').padStart(5, '0');
+    document.getElementById('passEventDate').textContent = ev.eventDate || 'TBD';
+    document.getElementById('passEventTime').textContent = ev.eventTime || 'TBD';
+    document.getElementById('passEventVenue').textContent = ev.venue || 'TBD';
+    document.getElementById('passEventOrganizer').textContent = ev.organizer || 'Campus Administration';
+
+    document.getElementById('passStudentName').textContent = st.name || currentUser?.name || 'Student Attendee';
+    document.getElementById('passStudentEmail').textContent = st.email || currentUser?.email || '—';
+    const dept = st.department || currentUser?.department || '—';
+    const yr = (st.year || currentUser?.year) ? ` • Year ${st.year || currentUser?.year}` : '';
+    document.getElementById('passStudentDeptYear').textContent = dept + yr;
+
+    const regDateStr = reg.registrationDate
+        ? new Date(reg.registrationDate).toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' })
+        : new Date().toLocaleString('en-IN', { dateStyle: 'medium', timeStyle: 'short' });
+    document.getElementById('passRegDate').textContent = `Issued on ${regDateStr}`;
+    document.getElementById('passBarcodeCode').textContent = `*PASS-${reg.id}-${st.id || currentUser?.id || '0'}*`;
+
+    // High quality QR code with fallback
+    const qrData = encodeURIComponent(`SCEMS-PASS|REG:${reg.id}|EVENT:${ev.id || ''}:${ev.title || ''}|STUDENT:${st.name || currentUser?.name || ''}|STATUS:CONFIRMED`);
+    const qrImg = document.getElementById('passQrCodeImg');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${qrData}`;
+    qrImg.onerror = function() {
+        this.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="130" height="130" viewBox="0 0 130 130"><rect width="130" height="130" fill="%23ffffff"/><rect x="15" y="15" width="30" height="30" fill="%231a1a2e"/><rect x="20" y="20" width="20" height="20" fill="%23ffffff"/><rect x="24" y="24" width="12" height="12" fill="%231a1a2e"/><rect x="85" y="15" width="30" height="30" fill="%231a1a2e"/><rect x="90" y="20" width="20" height="20" fill="%23ffffff"/><rect x="94" y="24" width="12" height="12" fill="%231a1a2e"/><rect x="15" y="85" width="30" height="30" fill="%231a1a2e"/><rect x="20" y="90" width="20" height="20" fill="%23ffffff"/><rect x="24" y="94" width="12" height="12" fill="%231a1a2e"/><rect x="55" y="25" width="15" height="15" fill="%231a1a2e"/><rect x="55" y="55" width="20" height="20" fill="%231a1a2e"/><rect x="85" y="65" width="15" height="15" fill="%231a1a2e"/><text x="65" y="122" font-size="10" text-anchor="middle" fill="%23667eea" font-family="sans-serif">VERIFIED</text></svg>';
+    };
+
+    const passModalEl = document.getElementById('eventPassModal');
+    const modalInstance = bootstrap.Modal.getInstance(passModalEl) || new bootstrap.Modal(passModalEl);
+    modalInstance.show();
+}
+
+function viewPassById(regId) {
+    const reg = myRegistrations.find(r => r.id === regId);
+    if (reg) {
+        if (!reg.student && currentUser) reg.student = currentUser;
+        showEventPass(reg);
+    } else {
+        showToast('❌ Pass record not found.', 'error');
+    }
+}
+
+function printPass() {
+    window.print();
+}
+
+function downloadPassPng() {
+    if (!currentPassRegistration) return;
+    const reg = currentPassRegistration;
+    const ev = reg.event || {};
+    const st = reg.student || currentUser || {};
+
+    const canvas = document.createElement('canvas');
+    const w = 720, h = 440;
+    canvas.width = w * 2;
+    canvas.height = h * 2;
+    const ctx = canvas.getContext('2d');
+    ctx.scale(2, 2);
+
+    // Card background
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.roundRect(0, 0, w, h, 18);
+    ctx.fill();
+
+    // Top Header gradient
+    const grad = ctx.createLinearGradient(0, 0, w, 0);
+    grad.addColorStop(0, '#1a1a2e');
+    grad.addColorStop(0.55, '#16213e');
+    grad.addColorStop(1, '#667eea');
+    ctx.fillStyle = grad;
+    ctx.beginPath();
+    ctx.roundRect(0, 0, w, 95, [18, 18, 0, 0]);
+    ctx.fill();
+
+    // Brand and Title
+    ctx.fillStyle = '#a8b2d1';
+    ctx.font = 'bold 11px Inter, sans-serif';
+    ctx.fillText('🎓 CAMPUSPHERE AI · EVENT MANAGEMENT SYSTEM · ENTRY PASS', 28, 30);
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 20px Inter, sans-serif';
+    const title = ev.title || 'Campus Event';
+    ctx.fillText(title.length > 34 ? title.substring(0, 32) + '...' : title, 28, 62);
+
+    // Category badge in header
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.roundRect(28, 70, 90, 18, 9);
+    ctx.fill();
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'bold 10px Inter, sans-serif';
+    ctx.fillText(ev.category || 'General', 36, 83);
+
+    // Pass Serial & Status on right
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#f5a623';
+    ctx.font = 'bold 16px monospace';
+    ctx.fillText('PASS-' + String(reg.id || '00001').padStart(5, '0'), w - 28, 40);
+
+    ctx.fillStyle = '#00e676';
+    ctx.font = 'bold 11px Inter, sans-serif';
+    ctx.fillText('● CONFIRMED TICKET', w - 28, 65);
+    ctx.textAlign = 'left';
+
+    // Details Row
+    ctx.fillStyle = '#8892b0';
+    ctx.font = 'bold 10px Inter, sans-serif';
+    ctx.fillText('DATE', 28, 125);
+    ctx.fillText('TIME', 160, 125);
+    ctx.fillText('VENUE', 290, 125);
+    ctx.fillText('ORGANIZER', 440, 125);
+
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'bold 13px Inter, sans-serif';
+    ctx.fillText(ev.eventDate || 'TBD', 28, 145);
+    ctx.fillText(ev.eventTime || 'TBD', 160, 145);
+    ctx.fillText((ev.venue || 'TBD').substring(0, 18), 290, 145);
+    ctx.fillText((ev.organizer || 'Campus Admin').substring(0, 20), 440, 145);
+
+    // Dashed divider line
+    ctx.strokeStyle = '#cbd5e1';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(28, 172);
+    ctx.lineTo(w - 28, 172);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Attendee details
+    ctx.fillStyle = '#667eea';
+    ctx.font = 'bold 11px Inter, sans-serif';
+    ctx.fillText('REGISTERED ATTENDEE', 28, 202);
+
+    ctx.fillStyle = '#8892b0';
+    ctx.font = 'bold 10px Inter, sans-serif';
+    ctx.fillText('NAME', 28, 226);
+    ctx.fillText('EMAIL', 28, 274);
+    ctx.fillText('DEPARTMENT & YEAR', 28, 322);
+
+    ctx.fillStyle = '#1a1a2e';
+    ctx.font = 'bold 15px Inter, sans-serif';
+    ctx.fillText(st.name || currentUser?.name || 'Student', 28, 248);
+
+    ctx.fillStyle = '#444444';
+    ctx.font = '12px Inter, sans-serif';
+    ctx.fillText(st.email || currentUser?.email || '—', 28, 296);
+    const yrText = (st.year || currentUser?.year) ? ' · Year ' + (st.year || currentUser?.year) : '';
+    ctx.fillText((st.department || currentUser?.department || '—') + yrText, 28, 344);
+
+    // Draw QR code
+    const qrImg = document.getElementById('passQrCodeImg');
+    try {
+        if (qrImg && qrImg.complete && qrImg.naturalWidth > 0) {
+            ctx.drawImage(qrImg, w - 175, 190, 145, 145);
+        } else {
+            ctx.strokeStyle = '#667eea';
+            ctx.strokeRect(w - 175, 190, 145, 145);
+            ctx.fillStyle = '#667eea';
+            ctx.font = 'bold 12px monospace';
+            ctx.fillText('PASS QR', w - 130, 265);
+        }
+    } catch(e) {
+        ctx.strokeStyle = '#667eea';
+        ctx.strokeRect(w - 175, 190, 145, 145);
+        ctx.fillStyle = '#667eea';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText('VERIFIED', w - 135, 265);
+    }
+
+    // Barcode Strip
+    ctx.fillStyle = '#f8fafc';
+    ctx.fillRect(0, 375, w, 65);
+
+    ctx.fillStyle = '#1a1a2e';
+    for (let x = 28; x < 300; x += (x % 5 === 0 ? 6 : 3)) {
+        ctx.fillRect(x, 390, (x % 3 === 0 ? 2 : 1), 24);
+    }
+    ctx.fillStyle = '#64748b';
+    ctx.font = '10px monospace';
+    ctx.fillText('*PASS-' + reg.id + '-' + (st.id || currentUser?.id || '0') + '*', 28, 426);
+    ctx.textAlign = 'right';
+    ctx.font = '11px Inter, sans-serif';
+    ctx.fillText('CampuSphere AI Verification System', w - 28, 412);
+    ctx.textAlign = 'left';
+
+    // Download PNG
+    const link = document.createElement('a');
+    link.download = `EventPass-${(ev.title || 'Event').replace(/[^a-zA-Z0-9]/g, '_')}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+}
+
+// ============================================================
+// FEEDBACK
+// ============================================================
+function openFeedback(eventId, eventTitle) {
+    document.getElementById('feedbackEventId').value = eventId;
+    document.getElementById('feedbackComment').value = '';
+    document.getElementById('feedbackAlert').className = 'alert d-none';
+    document.getElementById('selectedRating').value = 5;
+    document.getElementById('ratingLabel').textContent = '5 stars — Excellent';
+    document.querySelectorAll('.rating-star').forEach(s => s.classList.add('active'));
+    new bootstrap.Modal(document.getElementById('feedbackModal')).show();
+}
+
+async function submitFeedback() {
+    const eventId = document.getElementById('feedbackEventId').value;
+    const rating  = document.getElementById('selectedRating').value;
+    const comment = document.getElementById('feedbackComment').value.trim();
+    const alertDiv= document.getElementById('feedbackAlert');
+    const btn     = document.getElementById('submitFeedbackBtn');
+
+    if (!comment) {
+        alertDiv.className = 'alert alert-warning'; alertDiv.textContent = 'Please write your comment.'; return;
+    }
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
+    alertDiv.className = 'alert d-none';
+
+    try {
+        const r = await fetch(`/api/feedback/event/${eventId}?rating=${rating}&comment=${encodeURIComponent(comment)}`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Basic ' + auth }
+        });
+
+        if (r.ok) {
+            alertDiv.className = 'alert alert-success';
+            alertDiv.innerHTML = `<strong>✅ Feedback submitted successfully!</strong><br><small class="text-muted">Thank you for sharing your experience.</small>`;
+            setTimeout(() => {
+                bootstrap.Modal.getInstance(document.getElementById('feedbackModal')).hide();
+                showToast('Feedback submitted! Thank you.', 'success');
+            }, 1800);
+        } else {
+            const d = await r.json().catch(() => null);
+            alertDiv.className = 'alert alert-danger';
+            alertDiv.textContent = d?.message || 'Failed to submit feedback.';
+        }
+    } catch(e) {
+        alertDiv.className = 'alert alert-danger';
+        alertDiv.textContent = 'Error connecting to server.';
+    } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send me-1"></i> Submit Feedback';
+    }
+}
+
+// ============================================================
+// HELPERS
+// ============================================================
+function logout() { localStorage.removeItem('auth'); window.location.href = '/login'; }
+function escHtml(s) { if (!s) return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function getCategoryColor(c) {
+    const m = {'Technology':'#667eea','Sports':'#11998e','Cultural':'#f093fb','Competition':'#f5a623','Workshop':'#4facfe','Seminar':'#43e97b','General':'#888'};
+    if (!c) return '#888';
+    for (const [k, v] of Object.entries(m)) if (c.toLowerCase().includes(k.toLowerCase())) return v;
+    return '#667eea';
+}
+
+// ============================================================
+// INIT
+// ============================================================
+async function init() {
+    await loadProfile();
+    await loadMyRegistrations();
+    await loadEvents();
+    await loadRecommendations();
+
+    // Check hash for direct view
+    const hash = window.location.hash.substring(1);
+    if (hash && ['events', 'calendar', 'recommendations', 'registrations', 'profile'].includes(hash)) {
+        switchStudentService(hash);
+    } else {
+        switchStudentService('events');
+    }
+}
+init();
+</script>
+
+</body>
+</html>
