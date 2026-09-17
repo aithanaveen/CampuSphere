@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Python / ML ###
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+ml-service/.venv/
+ml-service/__pycache__/

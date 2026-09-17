@@ -1,0 +1,165 @@
+{
+  "best_model_name": "Logistic Regression",
+  "numeric_features": [
+    "student_year",
+    "previous_registrations",
+    "previous_attendance",
+    "category_match",
+    "department_match",
+    "event_popularity"
+  ],
+  "categorical_features": [
+    "student_department",
+    "event_category",
+    "event_department"
+  ],
+  "all_features": [
+    "student_year",
+    "previous_registrations",
+    "previous_attendance",
+    "category_match",
+    "department_match",
+    "event_popularity",
+    "student_department",
+    "event_category",
+    "event_department"
+  ],
+  "target": "registered",
+  "evaluation_results": {
+    "Logistic Regression": {
+      "accuracy": 0.9333,
+      "precision": 0.9262,
+      "recall": 0.9417,
+      "f1_score": 0.9339,
+      "roc_auc": 0.9833,
+      "confusion_matrix": [
+        [
+          111,
+          9
+        ],
+        [
+          7,
+          113
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.940677966101695,
+          "recall": 0.925,
+          "f1-score": 0.9327731092436975,
+          "support": 120.0
+        },
+        "1": {
+          "precision": 0.9262295081967213,
+          "recall": 0.9416666666666667,
+          "f1-score": 0.9338842975206612,
+          "support": 120.0
+        },
+        "accuracy": 0.9333333333333333,
+        "macro avg": {
+          "precision": 0.9334537371492082,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9333287033821793,
+          "support": 240.0
+        },
+        "weighted avg": {
+          "precision": 0.9334537371492081,
+          "recall": 0.9333333333333333,
+          "f1-score": 0.9333287033821792,
+          "support": 240.0
+        }
+      }
+    },
+    "Random Forest": {
+      "accuracy": 0.9208,
+      "precision": 0.9244,
+      "recall": 0.9167,
+      "f1_score": 0.9205,
+      "roc_auc": 0.9731,
+      "confusion_matrix": [
+        [
+          111,
+          9
+        ],
+        [
+          10,
+          110
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.9173553719008265,
+          "recall": 0.925,
+          "f1-score": 0.921161825726141,
+          "support": 120.0
+        },
+        "1": {
+          "precision": 0.9243697478991597,
+          "recall": 0.9166666666666666,
+          "f1-score": 0.9205020920502092,
+          "support": 120.0
+        },
+        "accuracy": 0.9208333333333333,
+        "macro avg": {
+          "precision": 0.9208625598999931,
+          "recall": 0.9208333333333334,
+          "f1-score": 0.920831958888175,
+          "support": 240.0
+        },
+        "weighted avg": {
+          "precision": 0.920862559899993,
+          "recall": 0.9208333333333333,
+          "f1-score": 0.920831958888175,
+          "support": 240.0
+        }
+      }
+    },
+    "Decision Tree": {
+      "accuracy": 0.8833,
+      "precision": 0.8966,
+      "recall": 0.8667,
+      "f1_score": 0.8814,
+      "roc_auc": 0.9414,
+      "confusion_matrix": [
+        [
+          108,
+          12
+        ],
+        [
+          16,
+          104
+        ]
+      ],
+      "classification_report": {
+        "0": {
+          "precision": 0.8709677419354839,
+          "recall": 0.9,
+          "f1-score": 0.8852459016393442,
+          "support": 120.0
+        },
+        "1": {
+          "precision": 0.896551724137931,
+          "recall": 0.8666666666666667,
+          "f1-score": 0.8813559322033898,
+          "support": 120.0
+        },
+        "accuracy": 0.8833333333333333,
+        "macro avg": {
+          "precision": 0.8837597330367075,
+          "recall": 0.8833333333333333,
+          "f1-score": 0.883300916921367,
+          "support": 240.0
+        },
+        "weighted avg": {
+          "precision": 0.8837597330367075,
+          "recall": 0.8833333333333333,
+          "f1-score": 0.883300916921367,
+          "support": 240.0
+        }
+      }
+    }
+  },
+  "train_size": 960,
+  "test_size": 240,
+  "note": "Synthetic interaction data is used for initial model training because the application does not yet have sufficient historical production data."
+}

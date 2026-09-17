@@ -46,6 +46,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/api/attendance/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/attendance/**").hasRole("ADMIN")
 
+                // ML sentiment analysis tool (authenticated students and admins)
+                .requestMatchers(HttpMethod.POST, "/api/sentiment/ml-analyze").authenticated()
+
                 // Generate AI feedback summary — only ADMIN
                 .requestMatchers(HttpMethod.POST, "/api/sentiment/**").hasRole("ADMIN")
 

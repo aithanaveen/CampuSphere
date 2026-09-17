@@ -1,0 +1,20 @@
+============================================================
+SMART CAMPUS EVENT REGISTRATION PREDICTION MODEL EVALUATION
+============================================================
+
+Training Samples: 960
+Testing Samples:  240
+Features:         student_year, previous_registrations, previous_attendance, category_match, department_match, event_popularity, student_department, event_category, event_department
+Target:           registered (1 = Likely to Register, 0 = Unlikely)
+
+DISCLOSURE: Synthetic interaction data is used for initial model training because the application does not yet have sufficient historical production data.
+
+------------------------------------------------------------
+Model                  | Accuracy | Precision | Recall   | F1       | ROC-AUC 
+------------------------------------------------------------
+Logistic Regression    | 0.9333   | 0.9262    | 0.9417   | 0.9339   | 0.9833  
+Random Forest          | 0.9208   | 0.9244    | 0.9167   | 0.9205   | 0.9731  
+Decision Tree          | 0.8833   | 0.8966    | 0.8667   | 0.8814   | 0.9414  
+------------------------------------------------------------
+
+SELECTED PRODUCTION MODEL: Logistic Regression

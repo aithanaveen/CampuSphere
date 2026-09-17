@@ -1,0 +1,451 @@
+comment,sentiment
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+Really enjoyed the interactive coding sessions and team challenges.,POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+Fabulous presentation and well prepared speaker notes.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Terrible experience, certificates were not distributed as promised.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Terrible experience, certificates were not distributed as promised.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"Acceptable presentation, speaker covered the scheduled agenda.",NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+Disorganized team and no clear schedule provided.,NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+Disorganized team and no clear schedule provided.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+Fabulous presentation and well prepared speaker notes.,POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Really enjoyed the interactive coding sessions and team challenges.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Fabulous presentation and well prepared speaker notes.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Fabulous presentation and well prepared speaker notes.,POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Really enjoyed the interactive coding sessions and team challenges.,POSITIVE
+"Terrible experience, certificates were not distributed as promised.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+"The session was fantastic, awesome presentation and well organized!",POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Fabulous presentation and well prepared speaker notes.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Acceptable presentation, speaker covered the scheduled agenda.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+Really enjoyed the interactive coding sessions and team challenges.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+Disorganized team and no clear schedule provided.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Terrible experience, certificates were not distributed as promised.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Terrible experience, certificates were not distributed as promised.",NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Satisfactory session, would prefer more practical examples next time.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Very inspiring session by the industry speakers.,POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Complete waste of time, the content was too basic and superficial.",NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Very satisfied with the learning outcomes and certificates.,POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+An ordinary college seminar with standard slides.,NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Decent workshop, some parts were good while others were theoretical.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+The venue was overcrowded and the air conditioning was not working.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"The session was fine, but timing could be adjusted better.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+The audio system was terrible and the speaker was not audible at the back.,NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+Had a great time collaborating with students from other branches.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+"Disappointed with the lack of hands-on practice, mostly boring slides.",NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Fair overview of the subject, reasonable for beginners.",NEUTRAL
+Wonderful guest lecture with clear explanations and real world examples.,POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Outstanding coordination and great refreshments provided.,POSITIVE
+Rushed through important topics without giving time for questions.,NEGATIVE
+"General introduction, met standard expectations.",NEUTRAL
+"Engaging and energetic speaker, kept everyone attentive throughout.",POSITIVE
+"Very poorly organized, started almost an hour late.",NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+"Not worth attending, poorly managed event.",NEGATIVE
+"Mediocre experience, but learned a few useful definitions.",NEUTRAL
+"Best technical workshop of the semester, highly recommend!",POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+"Great hands-on coding experience, the mentor was very helpful.",POSITIVE
+"Horrible experience, completely disorganized and useless.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+Really enjoyed the interactive coding sessions and team challenges.,POSITIVE
+"Bad audio quality, awful coordination and unresponsive coordinators.",NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+"Superb arrangement, everything was on schedule and informative.",POSITIVE
+"Wi-Fi was down throughout the lab session, couldn't finish the tasks.",NEGATIVE
+"Standard seminar, presentation slides could be shared earlier.",NEUTRAL
+The workshop was extremely informative and well structured.,POSITIVE
+Unhelpful organizers and confusing instructions for the competition.,NEGATIVE
+"Average arrangement, neither too impressive nor terrible.",NEUTRAL
+The practical demonstrations helped solidify key concepts.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Event took place as scheduled, average attendee engagement.",NEUTRAL
+Loved the hackathon organization and the problem statements.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"Covered the syllabus topics, nothing particularly new or bad.",NEUTRAL
+"Amazing workshop, very helpful mentors and great content.",POSITIVE
+Boring presentation with very little student interaction.,NEGATIVE
+"Neutral impression, event proceeded as described in the flyer.",NEUTRAL
+Highly impressed with the event organization and learning opportunities.,POSITIVE
+The workshop description was misleading compared to actual content.,NEGATIVE
+"The event was average, covered standard topics as expected.",NEUTRAL
+Excellent event! Learned so much about modern AI and cloud architectures.,POSITIVE
+Expected advanced concepts but it was just introductory basics.,NEGATIVE
+"It was okay, good for first year students who are new to coding.",NEUTRAL

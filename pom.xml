@@ -11,8 +11,8 @@
 	<groupId>com.smartcampus</groupId>
 	<artifactId>AI-Powered-Smart-Campus-Event-Management-System</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>CampuSphere AI</name>
-	<description>CampuSphere AI - Smart Campus Event Management System</description>
+	<name>CampuSphere</name>
+	<description>CampuSphere - Smart Campus Event Management System</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>
