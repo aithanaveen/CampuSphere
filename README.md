@@ -177,7 +177,7 @@ GET /api/recommendations  → Personalized recommendations (STUDENT)
 - Java 17+
 - MySQL 8.x running on port 3306
 - Maven 3.8+
-- OpenAI API Key (optional — app works without it using fallbacks)
+- OpenAI API Key 
 
 ### 1. Create MySQL Database
 ```sql
@@ -252,10 +252,5 @@ Open: **http://localhost:8080/login**
 
 ---
 
-## 🎓 Interview Explanation
-
-> "I built an AI-powered campus event management system in Spring Boot. Students can log in, browse events, register, and give feedback. The AI part has three features: (1) Sentiment analysis — when a student submits feedback, I send the comment to OpenAI's GPT-4o-mini and get back whether it's POSITIVE, NEGATIVE, or NEUTRAL with a confidence score. (2) Feedback summary — an admin can click a button to generate an AI summary of all feedback for an event. (3) AI recommendations — I built a content-based scoring algorithm that matches student interests against event categories and titles, then I use AI to generate a friendly one-sentence explanation of why each event is recommended. I used Spring Security for role-based authentication, Spring Data JPA for database operations, and Thymeleaf with Bootstrap for the frontend. All AI features have graceful fallbacks — if the API is unavailable, the core application continues to work normally."
-
----
 
 *Developed as a Final-Year B.Tech CSE Project*
